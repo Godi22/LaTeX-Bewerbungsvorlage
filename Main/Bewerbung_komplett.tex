@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bewerbung_komplett.tex
+% dies ist das Hauptdokument der Bewerbung für das komplette Dokument.
+% Es werden alle Teile der Bewerbung inkludiert.
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[]{scrartcl}
+
+\usepackage{Projektpfade}
+
+\usepackage{\pfadVorlagen Allgemein}
+\usepackage{\pfadVorlagen Anschreiben}
+\usepackage{\pfadVorlagen Lebenslauf}
+\usepackage{\pfadVorlagen Anlagen}
+
+
+\begin{document}
+
+\input{\pfadInhaltDeckblatt Deckblatt}
+
+\newpage
+\input{\pfadVorlagen AnschreibenAbstract}
+
+\newpage
+\input{\pfadVorlagen LebenslaufAbstract}
+
+\newpage
+\input{\pfadVorlagen AnlagenAbstract}
+
+\end{document}

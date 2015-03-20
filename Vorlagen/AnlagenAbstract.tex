@@ -1,0 +1,23 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AnlagenAbstract.tex
+% abstrahiert den Inhalt der Anlagen
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Sichern des Zeileneinrückens bei neuen Absatz
+\setParskip{off}
+\newlength{\parindentBeforeEncl}
+\setlength{\parindentBeforeEncl}{\parindent}
+\setlength{\parindent}{0pt}
+
+
+\setFirstPageEncl
+\addcontentsline{toc}{chapter}{\nameEncl}
+\changeHeaderAndFooter{\nameEncl}
+\anlagenDatein
+
+%\setLastPage braucht hier nicht verwendet werden, da beim Importieren der Anlagen Labels gesetzt werden.
+
+\setlength{\parindent}{\parindentBeforeEncl}

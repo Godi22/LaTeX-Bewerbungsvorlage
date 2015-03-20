@@ -1,0 +1,29 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AnschreibenAbstract.tex
+% abstrahiert den Inhalt des Anschreibens
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\setFirstPage{}{\nameLetter}{}{}
+\addcontentsline{toc}{chapter}{\nameLetter}
+\setParskip{\parskipAnschreiben}
+%\emergencystretch=20pt\tolerance=1200\hyphenpenalty=1000% Gewichte für Trennung
+
+\begin{letter}{\empfaengerAdresse}
+\inhaltAnschreiben
+
+\signatur
+
+\iftoggle{toggleAnlagen}{
+
+\newpage
+\changeHeaderAndFooter{\nameLetter}
+
+\enclAnschreiben
+}{}
+\setLastPage
+\end{letter}
+

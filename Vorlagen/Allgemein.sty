@@ -1,0 +1,464 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Allgemein.sty
+% stellt Kommandos für das gesamte Projekt zur Verfügung
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{\pfadVorlagen Allgemein}
+
+
+\RequirePackage{etoolbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Toggles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\gettoggle}[1]{\iftoggle{#1}{true}{false}}
+
+
+% Toggles für die Dokumente die inkludiert werden.
+\newtoggle{toggleDeckblatt} % Toggle für das Deckblatt
+\newtoggle{toggleAnschreiben} % Toggle für das Anschreiben. Wird in der Anschreiben.sty auf true gesetzt
+\newtoggle{toggleLebenslauf} % Toggle für den Lebenslauf. Wird in der Lebenslauf.sty auf true gesetzt
+\newtoggle{toggleAnlagen} % Toggle für die Anlagen.
+
+\newtoggle{backaddress} % Toggle für die Rücksendeadresse im Briefkopf
+
+\newtoggle{moderncvcolor} % Toggle für die Verwendung von moderncvcolor
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kommandos die in den Einstellungen benötigt werden
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Font
+\newcommand{\setFonts}[1]{
+\AtEndPreamble{
+	\RequirePackage[T1]{fontenc}
+	#1	
+	\selectfont
+}
+}
+
+% scrletter Optionen
+\newcommand{\scrletterOptions}{}
+\newcommand{\setScrletterOptions}[1]{\renewcommand{\scrletterOptions}{#1}}
+
+
+% Einstellungen Allgemein
+\newcommand{\einstellungenAllgemein}{}
+\newcommand{\setEinstellungenAllgemein}[1]{\renewcommand{\einstellungenAllgemein}{#1}}
+
+% Einstellungen Anschreiben
+\newcommand{\einstellungenAnschreiben}{}
+\newcommand{\setEinstellungenAnschreiben}[1]{\renewcommand{\einstellungenAnschreiben}{#1}}
+
+% Einstellungen Lebenslauf
+\newcommand{\einstellungenLebenslauf}{}
+\newcommand{\setEinstellungenLebenslauf}[1]{
+\renewcommand{\einstellungenLebenslauf}{#1}}
+
+% Einstellungen Anlagen
+\newcommand{\einstellungenAnlagen}{}
+\newcommand{\setEinstellungenAnlagen}[1]{
+\renewcommand{\einstellungenAnlagen}{#1}}
+
+% Einstellungen Farben
+\newcommand{\farben}{}
+\newcommand{\setFarben}[1]{
+\renewcommand{\farben}{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pakete die in allen tex Files benötigt werden
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Lade Einstellungen
+\RequirePackage{\pfadEinstellungen Einstellungen}
+
+
+\RequirePackage[utf8x]{inputenc}
+\RequirePackage[ngerman]{babel}
+\RequirePackage{datetime} 
+
+% Workaround für Fehler bei Verwendung von datetime in Kombination mit scrlttr2
+% Siehe: http://golatex.de/viewtopic,p,69439.html#69439
+\let\orgtoday\today
+\cspreto{date\languagename}{\def\today{\orgtoday}} 
+
+
+\RequirePackage[export]{adjustbox}
+
+\RequirePackage{enumitem}
+
+
+
+% Farben
+\RequirePackage[dvipsnames]{xcolor}
+
+% Laden einer moderncvcolor
+\newcommand{\setModernCVcolor}[1]{
+	\toggletrue{moderncvcolor}
+	\RequirePackage{moderncvcolor#1}
+}
+% Lade die Farben
+\farben
+
+
+\RequirePackage[pdftex,unicode]{hyperref}
+
+\RequirePackage{calc}
+
+\RequirePackage{graphicx}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Personenbezogene Daten
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand* \vorname {}  
+\newcommand* \nachname {}  
+\newcommand* \strasse {} 
+\newcommand* \PLZ {}  
+\newcommand* \wohnort {} 
+\newcommand* \mobilNr {}
+\newcommand* \festnetzNr {}
+\newcommand* \faxNr {} 
+\newcommand* \myEmailStr {}
+\newcommand* \myEmail{\href{mailto:\myEmailStr}{\myEmailStr}}
+\newcommand* \myHomepageStr{}
+\newcommand* \myHomepage{\href{\myHomepageStr}{\myHomepageStr}}
+\newcommand* \akadTitel {} 
+\newcommand* \preAkadTitel {} 
+\newcommand* \postAkadTitel {} 
+\newcommand* \nationalitaet{}
+\newcommand* \geburtsort{}
+\newcommand* \geburtstag{\displaydate{geburtstag}}
+
+
+% Unterschrift
+\newcommand* \unterschriftHoehe {}
+\newcommand* \unterschriftPfad {}
+
+% Foto
+\newcommand* \foto{}
+
+% Zusammengesetzte Kommandos
+\newcommand* \nameVN {\preAkadTitel \vorname\ \nachname \postAkadTitel}
+\newcommand* \nameVNhuge {\normalsize \preAkadTitel {\huge{ \vorname\ \nachname }}\normalsize \postAkadTitel}
+\newcommand* \PLZwohnort {\PLZ \ \wohnort}
+\newcommand* \addresse {\strasse\\\PLZwohnort}
+
+
+%% Setters
+\newcommand* \setVorname [1]{\renewcommand* \vorname {#1}}
+\newcommand* \setNachname [1]{\renewcommand* \nachname {#1}}
+\newcommand* \setStrasse [1]{\renewcommand* \strasse {#1}}
+\newcommand* \setPLZ [1]{\renewcommand* \PLZ {#1}}
+\newcommand* \setWohnort [1]{\renewcommand* \wohnort {#1}}
+\newcommand* \setMobilNr [1]{\renewcommand* \mobilNr {#1}}
+\newcommand* \setFestnetzNr [1]{\renewcommand* \festnetzNr {#1}}
+\newcommand* \setFaxNr [1]{\renewcommand* \faxNr {#1}}
+\newcommand* \setEmail [1]{\renewcommand* \myEmailStr{#1}}
+\newcommand* \setHomepage [1]{\renewcommand* \myHomepageStr{www.#1}}
+\newcommand* \setAkadTitel [1]{\renewcommand* \akadTitel {#1}}
+\newcommand* \setPreAkadTitel [1]{\renewcommand* \preAkadTitel {#1 }}
+\newcommand* \setPostAkadTitel [1]{\renewcommand* \postAkadTitel { #1}}
+\newcommand* \setNationalitaet [1]{\renewcommand* \nationalitaet {#1}}
+\newcommand* \setGeburtsort [1]{\renewcommand* \geburtsort {#1}}
+\newcommand* \setGeburtstag [3]{\newdate{geburtstag}{#1}{#2}{#3}}
+
+\def \setUnterschrift[#1]#2 {
+				\renewcommand* \unterschriftHoehe {#1}
+				\renewcommand* \unterschriftPfad {#2}}				
+\newcommand* \includeUnterschrift {\includegraphics[height=\unterschriftHoehe]{\unterschriftPfad}}
+
+\newcommand* \setFoto[1] {\renewcommand* \foto{#1}}
+
+\input{\pfadInhalt PersonenbezogeneDaten}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PDF Konfiguration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\AtEndPreamble{
+	\hypersetup{%
+		hidelinks,
+    	%bookmarks=true,         % show bookmarks bar?
+		pdfdisplaydoctitle=true,
+		bookmarksopen=true,
+		pdfpagelayout=OneColumn,% SinglePage / OneColumn 
+		% pdfpagetransition={Dissolve},
+		% Blinds 	/Dm | Box 	/M | Dissolve | Glitter 	/Di | Split 	/Dm /M | Wipe 	/Di 
+		% /Di= direction  in degrees, generally in 90 steps | /Dm horizontal (/H) or vertical (/V) | 
+		% /M is motion, in (/I) or out (/O).
+    %unicode=true,          % non-Latin characters in Acrobats bookmarks
+    %pdftoolbar=true,        % show Acrobats toolbar?
+    %pdfmenubar=true,        % show Acrobats menu?
+    pdffitwindow=true,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the FitV/FitH of the page to the window
+    pdftitle={Bewerbung - \nameVN},    % title
+    pdfauthor={\nameVN},     % author
+    pdfsubject={Bewerbung},   % subject of the document
+    pdfcreator={\nameVN},   % creator of the document
+    pdfproducer={\nameVN}, % producer of the document
+    pdfkeywords={Bewerbung} {\vorname} {\nachname} , % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=blue,          % color of internal links (change box color with linkbordercolor)
+    citecolor=blue,        % color of links to bibliography
+    filecolor=blue,      % color of file links
+    urlcolor=blue           % color of external links
+}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Textweite
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\textWidth}{\textwidth}
+\newcommand{\setTextWidth}[1]{
+	\renewcommand{\textWidth}{#1}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kopf und Fußzeilen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Setzen einer Pseudolänge
+\newcommand{\setPLength}[2]{
+	\iftoggle{toggleAnschreiben}{\@setplength{#1}{#2}}{}
+}
+
+
+% Setzen einer Länge und Pseudolänge
+\newcommand{\setLength}[3]{
+	\setPLength{#2}{#3}
+   	\setlength{#1}{#3}
+}
+
+
+% Kopfposition
+\setlength{\headheight}{25pt} % Damit kein Warning ausgegeben wird 
+
+\newlength\headMarginTop
+\newcommand*{\setHeadMarginTop}[1]{
+	\setLength{\headMarginTop}{firstheadvpos}{#1}
+}
+
+
+\newlength\headWidth
+\newlength\headMarginH
+\newcommand*{\setHeadWidth}[1]{
+	\setLength{\headWidth}{firstheadwidth}{#1}
+	\setlength{\headMarginH}{0.5\paperwidth}
+	\addtolength{\headMarginH}{-0.5\headWidth}
+	\setPLength{toaddrhpos}{\headMarginH}
+	\setPLength{lochpos}{\headMarginH}
+	%\KOMAoptions{headwidth=\useplength{firstheadwidth}}
+}
+
+\newlength\headLineThick
+\newcommand*{\setHeadLineThick}[1]{
+   \setlength{\headLineThick}{#1}  
+}
+
+
+% Fußposition
+\setlength{\footheight}{22pt} % Damit kein Warning ausgegeben wird 
+
+\newlength{\footMarginBottom}
+\newlength{\footVPos}
+\newcommand*{\setFootMarginBottom}[1]{
+	\setlength{\footMarginBottom}{#1}
+	\addtolength{\footMarginBottom}{\footheight}
+	\addtolength{\footMarginBottom}{10pt}
+	
+	\setlength{\footVPos}{\paperheight}
+	\addtolength{\footVPos}{-#1}
+	\addtolength{\footVPos}{-\footheight}
+	\setPLength{firstfootvpos}{\dimexpr\footVPos\relax}
+
+   	\ModifyLayer[voffset=\dimexpr\footVPos+1ex\relax]{scrheadings.foot.oneside}
+	\ModifyLayer[voffset=\dimexpr\footVPos+1ex\relax]{scrheadings.foot.above.line} 
+}
+
+
+\newlength\footWidth
+\newcommand*{\setFootWidth}[1]{
+	\setLength{\footWidth}{firstfootwidth}{#1}
+	%\KOMAoptions{footwidth=\useplength{firstfootwidth}} 
+}
+
+\newlength\footLineThick
+\newcommand*{\setFootLineThick}[1]{
+   \setlength{\footLineThick}{#1}  
+}
+
+
+
+% Name im Header
+\newcommand \kopfName {\strut\ignorespaces%		
+	{\color{familynamecolor}\nameVNhuge}\ignorespaces
+}
+     
+% Pagemark umdefinieren
+\renewcommand*{\pagemark}{\usekomafont{pagenumber}{%
+    Seite \thepage /\lastPageNr}}
+
+
+% Weitere Kopf und Fußzeilen
+% Verwendung von scrlayer-scrpage ab der zweiten Seite:
+\newcommand*{\newFoot}[1]{
+	\ifoot*{#1 \nameVN\\\today}
+}
+
+
+
+\newcommand{\defaultGeometry}{\newgeometry{
+	bottom=\footMarginBottom
+	, includefoot=false
+	, top=\headMarginTop
+	, includehead	
+	, width=\textWidth
+	%, showframe		
+}}
+
+% Geometry Packet
+\usepackage[a4paper]{geometry}
+\defaultGeometry
+
+
+\usepackage{scrlayer-scrpage}
+
+% Wechsel der Kopf und Fußzeile bei neuem Dokument
+\newcommand*{\changeHeaderAndFooter}[1]{
+	\defaultGeometry
+	\clearpairofpagestyles	
+	\pagestyle{scrheadings}
+	\setkomafont{pageheadfoot}{\footnotesize}
+	\KOMAoptions{headsepline=\headLineThick,headwidth=\headWidth}
+	\ohead*{\kopfName}
+	%\setkomafont{pagehead}{\huge}
+	\KOMAoptions{footsepline=\footLineThick,footwidth=\footWidth}
+	\ofoot*{\pagemark\\}
+	\newFoot{#1}	
+}
+
+% Farbe der Kopf und Fußzeile
+\addtokomafont{headsepline}{\color{rulecolor}}
+\addtokomafont{footsepline}{\color{rulecolor}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Redefinieren von Itemize
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand*{\labelitemi}          {\strut\textcolor{color1}{\large\rmfamily$\circ$}}
+\renewcommand*{\labelitemii}         {\strut\textcolor{color1}{\large\bfseries-}}
+\renewcommand*{\labelitemiii}        {\strut\textcolor{color1}{\rmfamily\textperiodcentered}}
+\renewcommand*{\labelitemiv}         {\labelitemiii}
+
+% enumerate labels
+\renewcommand{\theenumi}           {\@arabic\c@enumi}
+\renewcommand{\theenumii}          {\@alph\c@enumii}
+\renewcommand{\theenumiii}         {\@roman\c@enumiii}
+\renewcommand{\theenumiv}          {\@Alph\c@enumiv}
+
+% other symbols
+\newcommand*{\listitemsymbol}      {\labelitemi~}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Symbole
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifundefined{myMarvosymbol}{\newcommand*{\myMarvosymbol}[1]{}}{} 
+\@ifundefined{mobilesymbol}{\newcommand*{\mobilesymbol}{}}{}
+\@ifundefined{phonesymbol}{\newcommand*{\phonesymbol}{}}{}
+\@ifundefined{meinFaxSymbol}{\newcommand*{\meinFaxSymbol}{}}{}
+\@ifundefined{emailsymbol}{\newcommand*{\emailsymbol}{}}{}
+\@ifundefined{homepagesymbol}{\newcommand*{\homepagesymbol}{}}{}
+\@ifundefined{addresssymbol}{\newcommand*{\addresssymbol}{}}{}
+
+\renewcommand*{\myMarvosymbol}[1]{{\fontfamily{mvs}\fontencoding{U}\fontseries{m}\fontshape{n}\selectfont\char#1}}
+
+\renewcommand*{\mobilesymbol}{\myMarvosymbol{72}~}
+\renewcommand*{\phonesymbol}{\myMarvosymbol{84}~}
+\renewcommand*{\meinFaxSymbol}{\myMarvosymbol{118}~}
+\renewcommand*{\emailsymbol}{\myMarvosymbol{66}~}
+%\renewcommand*{\homepagesymbol}{{\Large\myMarvosymbol{205}}~}
+
+\renewcommand*{\meinFaxSymbol}{\includegraphics[height=0.7\baselineskip,margin*=0pt]{\pdfPicPath fax}~}
+\renewcommand*{\addresssymbol}{\includegraphics[height=0.7\baselineskip,margin*=0pt]{\pdfPicPath simple_home}~}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Label für erste und letzte Seiten jeden Dokuments generieren
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Label auf letzte Seite in dem Aktuellen Dokument, um die Seitenanzahl in der Fußzeile zu berechnen
+\newcommand* {\lastPageLabel}{NoLabel}
+% Seitenreferenz auf letzte Seite => gibt Seitennummer zurück
+\newcommand* {\lastPageNr}{\pageref{\lastPageLabel}}
+
+
+% Erste Seite des jeweiligen Dokuments
+% Parameter 1: Prelabel auf erster Seite, wenn leer dann wird firstPage: verwendet
+% Parameter 2: Label auf erster Seite, wenn leer dann wird kein Label gesetzt
+% Parameter 3: Prelabel auf letzte Seite, wenn leer dann wird lastPage: verwendet
+% Parameter 4: Label auf letzte Seite, wenn leer dann wird Parameter 2 verwendet, dann muss aber Parameter 2 vorhanden sein, ansonsten wird Seitenanzahl nicht richtig berechnet
+\newcommand {\setFirstPage}[4]{%	
+	\cleardoublepage
+	\phantomsection	
+	\setcounter{page}{1}%
+	\if\relax\detokenize{#2}\relax\else{%
+		\if\relax\detokenize{#1}\relax\label{firstPage:#2}\else\label{#1#2}\fi}%
+	\fi%
+	\renewcommand*{\lastPageLabel}{%
+		\if\relax\detokenize{#3}\relax lastPage:\else#3\fi%
+		\if\relax\detokenize{#4}\relax #2\else#4\fi%
+	}%		
+}%
+
+% Label für letzte Seite
+\newcommand {\setLastPage}{	
+	\label{\lastPageLabel}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sonstiges
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Befehle die benötigt werden auch wenn die Anlagen nicht inkludiert sind
+\iftoggle{toggleAnlagen}{}{
+\newcommand{\enclRef}[2]{#2}
+}
+
+% Allgemeine Einstellungen Laden
+\AtEndPreamble{
+\einstellungenAllgemein
+\defaultGeometry
+}
+
+% Parskip
+\newcommand{\setParskip}[1]{\KOMAoptions{parskip=#1}}
+	
+	
+\endinput

@@ -1,0 +1,47 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bewerbung.tex
+% dies ist das Hauptdokument der Bewerbung.
+% Welche Teile der Bewerbung inkludiert werden sollen kann in den Einstellungen ausgewählt werden.
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[]{scrartcl}
+
+\usepackage{Projektpfade}
+
+\usepackage{\pfadVorlagen Allgemein}
+
+\iftoggle{toggleAnschreiben}{
+\usepackage{\pfadVorlagen Anschreiben}
+}{}
+\iftoggle{toggleAnlagen}{
+\usepackage{\pfadVorlagen Anlagen}
+}{}
+\iftoggle{toggleLebenslauf}{
+\usepackage{\pfadVorlagen Lebenslauf}
+}{}
+
+
+\begin{document}
+\iftoggle{toggleDeckblatt}{
+\input{\pfadInhaltDeckblatt Deckblatt}
+}{}
+
+\iftoggle{toggleAnschreiben}{
+\newpage
+\input{\pfadVorlagen AnschreibenAbstract}
+}{}
+
+\iftoggle{toggleLebenslauf}{
+\newpage
+\input{\pfadVorlagen LebenslaufAbstract}
+}{}
+
+\iftoggle{toggleAnlagen}{
+\newpage
+\input{\pfadVorlagen AnlagenAbstract}
+}{}
+
+\end{document}

@@ -1,0 +1,243 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Anlagen.sty
+% stellt Kommandos für die Anlagen zur Verfügung
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{\pfadVorlagen Anlagen}
+
+\RequirePackage{pdfpages}
+\RequirePackage{graphicx}
+\RequirePackage{enumitem}
+\RequirePackage{hyperref}
+\RequirePackage{newfile}
+
+
+% Toggle für das Dokument
+\providetoggle{toggleAnlagen}
+\toggletrue{toggleAnlagen}
+
+
+% Toggle für Kopf/Fußzeile bei den Anlagen
+\providetoggle{toggleAnlagenKopfFuss}
+
+% Toggle für itemize Anlagentext
+\newtoggle{itemizeAnlagen}
+
+
+% Name des Dokuments
+\newcommand*{\nameEncl}{Anlagen}
+\newcommand* \setNameEncl [1]{\renewcommand* \nameEncl {#1}}
+
+%Pfad zu den Anlagen
+\providecommand*{\pfadAnlagen}{} 
+%BuildPfad
+\providecommand*{\pfadBuild}{./build/}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Funktionen für letztes label bei den Anlagen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dies wird benötigt um eine Seitenreferenz auf die letzte Seite zu bekommen (für Fußzeile)
+
+
+% Label prefix
+\newcommand*{\enclLabel}{encl:}
+
+% Letzter Label in den Anlagen
+\newcommand*{\enclLastLabelName}{}
+\newcommand*{\setenclLastLabelNameNew}[1]{\renewcommand*{\enclLastLabelName}{#1}}
+
+
+% Schreibe letztes Label in externes File
+\newoutputstream{pageLabel}
+\newcommand* \labelFile {\jobname.godi}
+\newcommand* \labelFilePath {\pfadBuild \labelFile}
+
+\newcommand \writeToLabelFile[1]{
+	\openoutputfile{\labelFile}{pageLabel}
+	\addtostream{pageLabel}{#1}  	
+	\closeoutputstream{pageLabel}
+}
+
+% Setze erste Seite des Anhanges
+\newcommand \setFirstPageEncl {
+	\IfFileExists{\labelFilePath}{
+		\input{\labelFilePath}% Hier ist der letzte Label gespeichert.
+	}{
+		\setFirstPage{\enclLabel}{DoesNotExist}{\enclLabel}{DoesNotExist}
+	}
+}
+
+
+\AtEndDocument{
+	\writeToLabelFile{\noexpand\setFirstPage{}{}{\enclLabel}{\enclLastLabelName}} % Schreibt das letzte Label in ext. Datei	
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Funktionen für Anlagentext
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\anlagenText}{} 
+
+\makeatletter
+\newcommand{\addAnlagenText}[2]{
+	\g@addto@macro\anlagenText{
+		\iftoggle{itemizeAnlagen}{\item\ \enclRef{#2}{#1}}{\enclRef{#2}{#1} \newline}}	
+}
+\makeatother
+
+% Referenz zu den Anlagen
+\newcommand{\enclRef}[2]{
+	\hyperref[\enclLabel #1.1]{#2}		
+}
+
+\newcommand{\enclAnschreiben}{ % Dieser Befehl wird im Anschreiben aufgerufen
+	\encl{:
+		\raggedright\\
+		\iftoggle{itemizeAnlagen} {						
+			\begin{itemizeEncl}			
+		}{}
+	\anlagenText
+	\iftoggle{itemizeAnlagen} {\end{itemizeEncl}}{}
+}}
+
+
+% Fußzeile Anlagen + bookmark
+\newcommand{\enclFoot}[1]{
+	\addcontentsline{toc}{section}{#1}
+	\ifoot*{\footnotesize{\nameEncl : #1\\\today}}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Funktionen für das Inkludieren der Anlagendateien
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Algemeine Befehle zum Bilder einfügen und zentrieren
+\newenvironment{bildSeite}{%
+	\clearpage%
+	\pagestyle{empty}%
+	\newgeometry{margin=0mm}%
+	\noindent\ignorespaces%
+}{%
+	\restoregeometry%
+	\par\noindent\ignorespacesafterend%
+	\clearpage
+}
+
+\newcommand* \bildZentriert[2] {%
+	\newpage\vspace*{\fill}%
+	\begin{minipage}[]{\textwidth}
+		\if\relax\detokenize{#1}\relax% Passe Höhe des Bildes automatisch an
+		\centerline{\includegraphics[
+				width=\iftoggle{toggleAnlagenKopfFuss}{\headWidth}{\textwidth}
+				,height=\textheight\iftoggle{toggleAnlagenKopfFuss}{-1cm}{-2cm}				
+				,keepaspectratio
+			]{\pfadAnlagen #2}}
+		\else{
+		\centerline{\includegraphics[scale=#1]{\pfadAnlagen #2}} % Skaliere Bild mit Parameter 1
+		}\fi
+		\label{\enclLabel #2.1}
+	\end{minipage}
+	\vspace*{\fill}%
+}
+
+\newcommand* \tempAnhangBild[2]{	
+	\iftoggle{toggleAnlagenKopfFuss}{
+		\bildZentriert{#1}{#2}%
+	}{	
+	\begin{bildSeite}%
+		\bildZentriert{#1}{#2}%
+	\end{bildSeite}%
+	}		
+}
+
+\newcounter{pdfPage}
+\newcommand* \tempAnhangPdf[3]{	
+	\newpage
+	\setcounter{pdfPage}{0}	
+	\iftoggle{toggleAnlagenKopfFuss}{\enclFoot{#3}}{\pagestyle{empty}}       
+	\includepdf[
+		width=\iftoggle{toggleAnlagenKopfFuss}{\headWidth}{\textwidth}
+		, height=\textheight\iftoggle{toggleAnlagenKopfFuss}{-1cm}{+3cm}				
+		, keepaspectratio		
+		, pages=#1, link=true, linkname=\enclLabel #2,
+		pagecommand={\stepcounter{pdfPage}\cleardoublepage\phantomsection \label{\enclLabel #2.\thepdfPage}}]{\pfadAnlagen #2}	
+}
+
+
+
+%% Befehle zum Inkludieren der Anlagendateien
+\newcommand{\anlagenDatein}{} % Dieser Befehl wird in der Datei aufgerufen wo die Bilder includiert werden sollen
+
+\makeatletter
+\newcommand*{\addAnlagenBild}[3]{
+	\g@addto@macro\anlagenDatein{		
+			\cleardoublepage
+			\phantomsection
+			\tempAnhangBild{#1}{#2}
+			\enclFoot{#3}	
+}}
+
+\newcommand*{\addAnlagenPdf}[3]{
+	\g@addto@macro\anlagenDatein{
+			\cleardoublepage
+			\phantomsection
+			\tempAnhangPdf{#1}{#2}{#3}
+}}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Funktionen für das Erstellen einer neuen Anlage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\addBild}[3][]{
+	\addAnlagenBild{#1}{#2}{#3}
+	\addAnlagenText{#3}{#2}
+	\setenclLastLabelNameNew{#2.1}
+}
+
+\newcommand*{\addPdf}[3][-]{	
+	\addAnlagenPdf{#1}{#2}{#3}%
+	\addAnlagenText{#3}{#2}
+	\setenclLastLabelNameNew{#2.\thepdfPage}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einbinden der Anlagen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{toggleLebenslauf}{
+	\addAnlagenText{\nameCV}{\nameCV}
+}{}
+
+\input{\pfadInhaltAnlagen Anlagen}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einstellungen der Anlagen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Einstellungen für Itemize 
+\newlist{itemizeEncl}{itemize}{3}% neue Listenumgebung für Tabellen
+\newcommand*{\setItemizeEncl}[1]{
+	\setlist[itemizeEncl]{#1}
+	\setlist[itemizeEncl,1]{label=\labelitemi}
+	\setlist[itemizeEncl,2]{label=\labelitemii}
+	\setlist[itemizeEncl,3]{label=\labelitemiii}
+}
+
+
+
+% Lade die Einstellungen
+\einstellungenAnlagen
+
+\endinput

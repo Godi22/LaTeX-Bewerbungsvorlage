@@ -1,0 +1,274 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einstellungen.sty
+% Hier befinden sich die ganzen Einstellungen für die Bewerbungsvorlage
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{\pfadEinstellungen Einstellungen}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Toggle die Dokumente für Bewerbung 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\toggletrue{toggleDeckblatt}
+\toggletrue{toggleAnschreiben}
+\toggletrue{toggleAnlagen}
+\toggletrue{toggleLebenslauf}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paketoptionen 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% scrartcl
+\KOMAoptions{
+ 	BCOR=0mm			% Keine Bindekorrektur
+	,fontsize=11pt
+	,paper=a4
+	,headlines=1
+	,footlines=2	
+	,draft=on  % Zeigt Überfüllte H-Boxen an	
+}
+
+% Einstellungen für scrletter
+\togglefalse{backaddress} % Rücksendeadresse nicht Anzeigen
+%\toggletrue{backaddress} % Rücksendeadresse Anzeigen
+
+\setScrletterOptions{%
+	foldmarks=false	% Keine Faltmarken
+	,enlargefirstpage=true	% optionale vergroesserung des Txt Bereichs d. 1 Seite
+	,firstfoot=off		% Briefbogenfuss gesetzt? Mit enlargefirstpage verbandelt.
+	,firsthead=on		% Briefkopf an/aus. Def:an
+	,fromalign=right	% Absender rechts statt links	
+	,addrfield=true			% Anschrift mit Rücksendeadresse
+	,backaddress=\iftoggle{backaddress}{on}{off}		% Rücksendeadresse, oder "plain"	
+	,refline=narrow	
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Schriftarten 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setFonts{
+	\usepackage[T1]{fontenc}
+	\usepackage{amssymb} % square 
+	\usepackage{pxfonts}
+	\usepackage{txfonts}
+	\usepackage{lmodern}
+	\usepackage[default]{opensans}
+	%\usepackage[]{helvet}
+	
+	%\renewcommand*{\familydefault}{\rmdefault}% nutze serifenlose Schrift
+	%\renewcommand*{\familydefault}{\sfdefault}% nutze serifenlose Schrift	
+	\renewcommand*{\seriesdefault}{l}% Open Sans: l, cl, m, sb, b (bx), eb
+	%\renewcommand*{\shapedefault}{\sfdefault}% Open Sans: n, it (sl), sc, scit (scsl)	
+}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einstellungen Allgemein
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setEinstellungenAllgemein{
+% Hinweis: Bei einer Längenänderung muss manchmal 2mal kompiliert werden, damit die Längen stimmen.
+
+% Textweite
+\setTextWidth{15cm}
+
+% Einstellungen für Kopfzeile
+\setHeadMarginTop{1.5cm}
+\setHeadWidth{16.5cm}
+\setHeadLineThick{1.5pt}
+
+% Einstellungen für Fußzeile 
+\setFootMarginBottom{1.5cm}
+\setFootWidth{\headWidth}
+\setFootLineThick{0.75pt}
+
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einstellungen Farben
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setFarben{
+% Laden einer moderncvcolor, dazu muss moderncv installiert sein.
+% Wird dies Auskommentiert, so können die Farben in diesem Paket selbst definiert werden.
+% Folgende Farben sind verfügbar: black, blue, green, grey, orange, purple, red;
+%\setModernCVcolor{orange} % Importiert {color0}{color1}{color2}
+
+% color 0, color 1, color 2 selbst definieren
+\iftoggle{moderncvcolor}{}{
+	\definecolor{color0}{rgb}{0,0,0}% black
+	\definecolor{color1}{RGB}{102, 131, 92}% green1
+	%\definecolor{color1}{RGB}{89, 116, 76}% green2
+	\definecolor{color2}{rgb}{0.45,0.45,0.45}% dark grey
+}
+
+% Weitere Farben
+\definecolor{firstnamecolor}{rgb}{0.65,0.65,0.65}
+\definecolor{familynamecolor}{rgb}{0.45,0.45,0.45}
+\definecolor{footersymbolcolor}{rgb}{0.30,0.65,0.15}
+\definecolor{addresscolor}{rgb}{0.35,0.35,0.35} %grau	
+\colorlet{rulecolor}{color1}
+
+
+} % Ende Farben
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einstellungen für das Anschreiben
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setEinstellungenAnschreiben{
+
+% Name des Anschreibens
+\setNameLetter{Bewerbung}
+
+% Absatzumbruch: full, half oder off. Weitere Möglichkeiten siehe Koma Script
+\setParskipAnschreiben{half}	
+
+% Anschreiben Linksbündig. (Default: Blockabsatz)
+%\setAnschreibenLinksBuendig
+
+% Vertikale Position der Empfängeradresse
+% Achtung: ist diese zu klein, Kollidiert sie mit großem Header! => Warning Overfull \vbox
+% Wird dieses Kommando auskommentiert so wird der Defaultabstand von scrlettr verwendet.
+\setToAddrVPos{32mm} % per Email oder Brief ohne Sichtfeld
+%\setToAddrVPos{55mm} % per Brief mit Sichtfeld
+
+% Abstand zwischen Empfängeradresse und Ort/Datum
+% Default: eine Zeile, mit optionalen Parameter kann auch ein anderer Abstand eingestellt werden
+% Wird dieses Kommando auskommentiert so wird der Defaultabstand von scrlettr verwendet.
+\setPlaceBetweenAddressAndDate
+
+% Text zwischen Ort und Datum
+\setSeperatorOrtDatumAnschreiben{, am }
+
+
+} % Ende Einstellungen Anschreiben
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einstellungen für den Lebenslauf
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setEinstellungenLebenslauf{
+
+
+% Name des Dokuments, wird in der Fußzeile angezeigt.
+\setNameCV{Lebenslauf}
+
+% Kein Foto im Lebenslauf
+%\toggletrue{keinFoto}
+
+% Bild spiegeln
+%\toggletrue{reflectPic}
+
+
+% Bild position
+\setPicMarginTop{\headsep} % Abstand Kopfline Bild (mit \headsep schließt die Oberkante des Bildes mit der Oberkante des Textfeldes ab.
+\setPicMarginSide{0cm} % Abstand zwischen Abschluss Kopzeile zu Bild
+
+% Höhe des Bildes
+\setPicHeight{5cm}
+
+% Bild Rahmen
+\setFramePic[color1]{\footLineThick} % Bei Parameter 0pt ist der Rahmen entfernt
+
+% Titel im Lebenslauf Zentrieren
+%\toggletrue{lebenslaufTitelZentriert}
+
+% Dicke der section Linie
+\setSectionLineThick{1.5mm}
+
+% Abstand der Sektionen als Multiplikationsfaktor
+\setSectionMarginMult{1.2mm}
+
+% Abstand zwischen den kurzen Einträgen (\eintragK* kann auch als optionaler Parameter übergeben werden)
+\setEintragKAbstand{0.15em}
+
+% Aufzählungspunkte automatisch hinzufügen
+\toggletrue{itemizeEintrag}
+
+% Manuelle Korrektur der Monatslänge
+% Bei negativen Werten wird eine Warnung ausgegeben
+\addLengthMonthMax{-3.5pt}
+
+% Jahr auf maximale Länge des Monatsnamen spreizen.
+%\togglefalse{spacingYear}
+
+% Horizontaler Abstand zwischen Datum und Trennzeichen -.
+\setHspaceDateDelim{1mm}
+
+% Vertikaler Abstand zwischen Jahr und Monat.
+\setVspaceYearMonth{0mm}
+
+% Spaltenbreite der Linken Spalte
+% \timeWidth gibt die Weite eines Datumeintrages an.
+\setBreiteLinkeSpalteLL{\timeWidth+1pt}
+
+% Wechsel zwischen zwei und drei Spalten
+%\toggletrue{zweiSpalten}
+
+% Einstellungen für Itemize im Lebenslauf
+% Siehe Handbuch enumitem: https://www.ctan.org/pkg/enumitem
+\setItemizeCV{
+	 topsep=0pt
+	,itemsep=0pt
+	,parsep=0pt
+	,partopsep=0pt
+	,leftmargin=*	
+}
+
+} % Ende Einstellungen Lebenslauf
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einstellungen für die Anlagen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setEinstellungenAnlagen{
+
+% Name des Dokuments, wird in der Fußzeile angezeigt.
+\setNameEncl{Anlagen}
+
+% Toggle für Kopf/Fußzeile bei den Anlagen
+\toggletrue{toggleAnlagenKopfFuss}
+
+% Einstellugen für die Anlagen wenn Anschreiben existiert
+\iftoggle{toggleAnschreiben}{
+
+	% Überschrift / Seperator für die Anlagen
+	\setAnlagenUeberschrift{Anlagen} % Doppelpunkt muss nicht angeführt werden.
+
+	% Stellt Punkte bei dem Anlagentext im Anschreiben voran.
+	\toggletrue{itemizeAnlagen}
+
+	% Einstellungen für Itemize in der Anlagenliste des Anschreibens
+	% Siehe Handbuch enumitem: https://www.ctan.org/pkg/enumitem
+	\setItemizeEncl{%
+		  topsep=5pt
+		, itemsep=0pt
+		, parsep=0pt
+		, partopsep=0pt}	
+}{} % end if toggle Anlagen im Anschreiben
+
+} % Ende Einstellungen Anlagen
+
+
+\endinput

@@ -1,0 +1,537 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lebenslauf.sty
+% stellt Kommandos für den Lebenslauf zur Verfügung
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ProvidesPackage{\pfadVorlagen Lebenslauf}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Benötigte Pakete
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{\pfadVorlagen Allgemein}
+
+\RequirePackage{tabu}
+\RequirePackage{datetime}
+
+\RequirePackage{ifthen}
+\RequirePackage{forloop}
+
+\RequirePackage{graphicx}
+\RequirePackage[export]{adjustbox} % Exportiert die Optionen von adjustbox zu includegraphics
+\RequirePackage{tikz}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Toggles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Toggle für Lebenslauf
+\providetoggle{toggleLebenslauf}
+\toggletrue{toggleLebenslauf}
+
+% Toggle Foto aus/an
+\newtoggle{keinFoto}
+
+% Bild Links positionieren
+\newtoggle{picLeft} 
+% Bild links/rechts
+% Text wird nicht automatisch verschoben
+%\toggletrue{picLeft} % TODO: Testen und in Einstellungen verschieben
+
+% Bild spiegeln
+\newtoggle{reflectPic}
+
+% Toggle Titel Lebenslauf Zentriert
+\newtoggle{lebenslaufTitelZentriert}
+
+% Toggle Einträge in Listen darstellen
+\newtoggle{itemizeEintrag}
+
+% Jahr auf maximale Länge des Monatsnamen spreizen.
+\newtoggle{spacingYear}
+\toggletrue{spacingYear}
+
+% eintragKB links ausrichten
+\newtoggle{eintragKBlinks}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Spaltenbreiten und Längen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newlength{\separatorcolumnwidth}
+\setlength{\separatorcolumnwidth}{0.025\textwidth}
+\newlength{\maincolumnwidth}
+
+
+% Breite Linke Spalte
+\newlength{\hintscolumnwidth}
+\newcommand* \setBreiteLinkeSpalteLL [1]{\setlength{\hintscolumnwidth}{#1}}
+\setBreiteLinkeSpalteLL{30mm}
+
+% Hauptspaltenbreite
+\newlength \hauptSpaltenBreite
+\setlength \hauptSpaltenBreite {\maincolumnwidth}
+	
+% Stadt Breite 
+\newlength{\stadtBreite}
+\newcommand* \laengsteStadt[1]{
+	\settowidth{\stadtBreite}{#1}}
+	
+	
+% Breite linker EintragKB 
+\newlength{\breiteLinkerEintragKB}
+\newcommand* \laengsterLinkerEintragKB[1]{
+	\settowidth{\breiteLinkerEintragKB}{{\mdseries{#1}}:}}
+
+
+
+% Längen neu berechnen
+\newcommand*{\recomputecvlengths}{
+	\setlength{\maincolumnwidth}{\textwidth-\separatorcolumnwidth-\hintscolumnwidth}
+}
+
+
+\AtEndPreamble{\recomputecvlengths{}}
+\AtBeginDocument{\recomputecvlengths{}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Titel und Bild
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Abstand Kopfzeile zu Bild
+\newlength\picMarginTop
+\newcommand*{\setPicMarginTop}[1]{
+	\setlength{\picMarginTop}{#1}
+}
+\setPicMarginTop{0.7cm}
+
+% Abstand zwischen Abschluss Kopzeile zu Bild
+\newlength\picMarginSide
+\newcommand*{\setPicMarginSide}[1]{
+	\setlength{\picMarginSide}{#1}
+}
+\setPicMarginSide{0cm}
+
+% Spiegeln des Bildes
+\newcommand*{\reflectPic}{
+	\iftoggle{reflectPic}{\reflectbox}{}
+}
+
+% Rahmen des Bildes
+\newcommand*{\picFrameRule}{1pt}
+\newcommand*{\picFrameColor}{color1}
+\newcommand*{\defaultFrameRule}{\fboxrule}
+\newcommand*{\setFramePic}[2][color1]{
+	\renewcommand*{\picFrameColor}{#1}
+	\renewcommand*{\picFrameRule}{#2}
+}
+
+% Höhe des Fotos
+\newcommand*{\picHeight}{5cm}
+\newcommand*{\setPicHeight}[1]{\renewcommand*{\picHeight}{#1}}
+
+% Importiere Bild
+\newcommand*{\includePic}{
+	\color{\picFrameColor}
+	\reflectPic{{\includegraphics[height=\picHeight ,frame=\picFrameRule ]{\foto}}}
+}
+
+% Positioniere Bild
+\newcommand{\tikzPic}[3]{
+	\tikz[remember picture,overlay]
+   		\node [anchor=#3]  
+    		at([shift={(#1,#2)}]current page.#3){\includePic};
+}
+
+
+% Bild links / rechts
+\newcommand{\pic}{
+	\iftoggle{picLeft}{
+		\tikzPic{\picMarginSide+\headMarginH}{-\headheight-\headMarginTop-\picMarginTop}{north west}
+	}{
+		\tikzPic{-\picMarginSide-\headMarginH+4pt}{-\headheight-\headMarginTop-\picMarginTop+4pt}{north east} % TODO: Warum +4pt? Rand von Geometry?
+	}
+}
+
+
+% Titel
+\newcommand*\titelPos[1] {
+	\iftoggle{lebenslaufTitelZentriert}{\hspace*{\fill}#1\hspace*{\fill}}{#1}
+}
+
+\newcommand* \titel[1][\nameCV] {	
+	{\color{color1} \Huge \titelPos{#1}  \label{encl:\nameCV.1}}		
+	\iftoggle{keinFoto}{}{\newline\pic}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sektion
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Schriftart und Style
+\newcommand*{\sectionfont}{\Large\mdseries\upshape}
+\newcommand*{\subsectionfont}{\large\mdseries\upshape}
+
+\newcommand*{\sectionstyle}[1]{{\sectionfont\textcolor{color1}{#1}}}
+\newcommand*{\subsectionstyle}[1]{{\subsectionfont\textcolor{color1}{#1}}}
+
+
+% Linienstärke der Sektion
+\newlength \sectionLineThick
+\newcommand{\setSectionLineThick}[1]{
+	\setlength \sectionLineThick {#1}
+}
+\setSectionLineThick{1.5mm}
+
+% Abstandsmultiplikator der Sektionen
+\newlength \sectionMarginMult
+\newcommand* \setSectionMarginMult[1]{
+	\setlength \sectionMarginMult {#1}
+}
+\setSectionMarginMult{1mm} %{0.6ex}
+
+
+% Neudefiniton der Sektion
+\newlength \sectionSchriftHoehe
+\newcommand \sectionBeschriftung[1]{\sectionstyle{#1}}
+
+\@ifundefined{section}{\newcommand \section[1] {}}{}
+
+\renewcommand*{\section}[1]{%
+	\par\addvspace{5\sectionMarginMult}% 2.5ex default
+	\phantomsection{}% reset the anchor for hyperrefs
+	\addcontentsline{toc}{section}{#1}%
+	\settoheight \sectionSchriftHoehe {\sectionstyle{#1}}
+	\parbox[t]{\hintscolumnwidth}%
+		{\strut\raggedleft\raisebox{.5\sectionSchriftHoehe-.5\sectionLineThick}{\color{color1}\rule{\hintscolumnwidth}{\sectionLineThick}}}%
+	\hspace{\separatorcolumnwidth}%
+	\sectionstyle{#1}%
+	\par\nobreak\addvspace{1.5\sectionMarginMult}\@afterheading
+}
+
+\renewcommand*{\subsection}[1]{%  	
+  	\phantomsection{}% reset the anchor for hyperrefs
+  	%\addcontentsline{toc}{subsection}{#1}%  		
+	\hspace{\hintscolumnwidth}%
+	\hspace{\separatorcolumnwidth}%
+	\subsectionstyle{#1}%
+  	\par\nobreak\addvspace{1.5\sectionMarginMult}\@afterheading
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Datum / Zeitspanne
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Längen
+% Länge eines Zeiteintrages (für min Spaltenbreite)
+\newlength{\timeWidth}
+
+% Horizontaler Abstand zwischen Datum und Trennzeichen -.
+\newlength{\hspaceDateDelim}
+\setlength{\hspaceDateDelim}{1mm}
+\newcommand{\setHspaceDateDelim}[1]{ % Dieses Kommando muss nach der Definition von \zeit aufgerufen werden.
+	\setlength{\hspaceDateDelim}{#1}
+	\settowidth{\timeWidth}{\zeit[9.2000-9.2000]}					
+}
+
+% Vertikaler Abstand zwischen Jahr und Monat.
+\newcommand*{\vspaceYearMonth}{0mm}
+\newcommand*{\setVspaceYearMonth}[1]{
+	\renewcommand*{\vspaceYearMonth}{#1}				
+}
+
+% String aufspalten und zwischen jedem Zeichen ein \hfill einfügen.
+% Siehe: http://tex.stackexchange.com/questions/61787/insert-hfill-after-each-character/61860#61860
+\makeatletter
+\def\addhfills#1{%
+    % rescan the argument with catcode 12 for spaces (so that they aren't ignored).
+    \begingroup\catcode` =12\relax\xdef\tmp{\scantokens{#1\noexpand}}\endgroup%
+    \expandafter\addhfills@@\tmp\addhfills@end%
+}
+% save catcode 12 space
+\begingroup\catcode` =12\relax\gdef\otherspace{ }\endgroup
+% an end marker
+\def\addhfills@end{\relax}
+
+\def\addhfills@@#1{#1\addhfills@@@}
+\def\addhfills@@@#1{%
+    \ifx#1\addhfills@end\else%
+        \def\tmp{#1}%
+        \ifx\tmp\otherspace%
+            \hfill\hfill%
+        \else%
+            \hfill#1%
+        \fi%
+        \expandafter\addhfills@@@%
+    \fi%
+}
+\makeatother
+
+% Leerzeichen in String einfügen
+\newcommand{\spacingYear}{
+	\iftoggle{spacingYear}{\addhfills}{\centering}
+}
+
+
+% Länge des längsten Monat bestimmen.
+\newlength{\lengthMonthMax}
+\newlength{\tempLenghtMonth}
+\newcounter{monthnr}
+\settowidth{\lengthMonthMax}{2000} % Mindestlänge für das Jahr
+\forloop{monthnr}{1}{\value{monthnr} < 13}{	
+	\settowidth{\tempLenghtMonth}{\tiny{\monthname[\themonthnr]}}
+	\ifthenelse{
+		\lengthtest{\lengthMonthMax<\tempLenghtMonth}}{
+		\setlength{\lengthMonthMax}{\tempLenghtMonth}}{}			
+}
+
+% Manuelle Korrektur der Monatslänge
+% Bei negativen Werten wird eine Warnung ausgegeben
+\newcommand{\addLengthMonthMax}[1]{
+	\addtolength{\lengthMonthMax}{#1}
+}
+
+% Plotten der Jahreszahl über den Monatsnamen
+\newcommand{\monthYear}[3][\vspaceYearMonth]{\parbox[t]{\lengthMonthMax}{\spacingYear{#3}\vspace{#1}\newline\centering\tiny{#2}}}
+
+% von - bis: kann auch kein Datum entgegennehmen
+\newcommand \vonBis[2]{#1\hspace{\hspaceDateDelim}{\color{color1}--}\hspace{\hspaceDateDelim}#2}
+
+% datePretty: Plottet ein Datum im "pretty" Format
+\def \datePretty[#1.#2]{\monthYear{\monthname[#1]}{#2}}
+\def \Datum[#1.#2]{\datePretty[#1.#2]} % Alias
+
+% Plott von seit:  seit Datum
+\def \seit[#1.#2]{\since[#1.#2]{seit}}
+
+% Plott von since:  argument3 Datum
+\def \since[#1.#2]#3{{\small{#3}\hspace{\hspaceDateDelim}\hphantom{--}}\datePretty[#1.#2]}
+
+% von Plottet: Datum - übergebenen Namen
+\def \von[#1.#2]#3{\vonBis{\datePretty[#1.#2]}{\parbox[t]{\lengthMonthMax}{\centering\small{#3}}}}
+
+% zeit: Plottet eine Zeitspanne im "pretty" Format
+\def \zeit[#1.#2-#3.#4]{\vonBis{\datePretty[#1.#2]}{\datePretty[#3.#4]}}
+
+
+\setHspaceDateDelim{\hspaceDateDelim} % Zum berechnen der Spaltenbreite
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einträge in CV
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Abstand zwischen den kurzen Einträgen {\eintragK*}
+\newlength \eintragKAbstand
+\newcommand* \setEintragKAbstand[1]{
+	\setlength \eintragKAbstand {#1}
+}
+\setEintragKAbstand{0.15em}
+
+\newcommand* \eintragsAbstand {2\sectionMarginMult}
+\newcommand* \eintragsAbstandEinzeiler {1\sectionMarginMult} 
+
+% Kurzer Eintrag ohne Datum Zweispaltig
+% Optionaler Parameter: Abstand nach Eintrag
+\newcommand \eintragK [3][\eintragKAbstand]{%
+  \begin{tabu}{@{}p{\hintscolumnwidth}@{\hspace{\separatorcolumnwidth}}p{\textwidth-\separatorcolumnwidth-\hintscolumnwidth}@{}}%
+    	\raggedleft{#2} & {#3}\strut%
+  \end{tabu}%
+  \par\addvspace{#1}	
+}
+
+% Kurzer Eintrag ohne Datum Dreispaltig
+% Optionaler Parameter: Abstand nach Eintrag
+\newcommand* \eintragKK [4][\eintragKAbstand]{%	
+	\begin{tabu}{@{} p{\hintscolumnwidth} @{\hspace{\separatorcolumnwidth}} p{\textwidth-\separatorcolumnwidth-\hintscolumnwidth} @{}}{
+		\raggedleft{#2} &{#3%
+			\iftoggle{zweiSpalten}{
+				\if\relax\detokenize{#4}\relax\else{\textit{ -- #4}}\fi
+			}{
+				\hfill #4
+			}}\strut%
+		}%
+	\end{tabu}%	
+	\par\addvspace{#1}
+}
+
+% Kurzer Eintrag ohne Datum mit fetter Schrift
+% Optionaler Parameter: Abstand nach Eintrag
+\newcommand \eintragKB [3][\eintragKAbstand]{%
+	\iftoggle{eintragKBlinks}{
+		\begin{tabu}%
+				{@{}p{\breiteLinkerEintragKB}@{\hspace{\separatorcolumnwidth}}%				
+				p{\textwidth-\separatorcolumnwidth-\breiteLinkerEintragKB}@{}}%
+    		\raggedleft{\mdseries{#2}}: & \raggedright{#3\strut}%
+    	\end{tabu}%
+    	\par\addvspace{#1}
+	}{
+		\begin{tabu}%
+				{@{}p{\hintscolumnwidth}@{\hspace{\separatorcolumnwidth}}%
+				p{\breiteLinkerEintragKB}@{\hspace{\separatorcolumnwidth}}%
+				p{\textwidth-\hintscolumnwidth-2\separatorcolumnwidth-\breiteLinkerEintragKB}@{}}%
+    		& \raggedright{\mdseries{#2}}: & \raggedright{#3\strut}%
+    	\end{tabu}%
+    	\par\addvspace{#1}	
+	}
+}
+
+
+% Eintrag mit drei Spalten
+\newcommand \eintragLDrei [7]{%
+	\begin{tabu} {@{} p{\hintscolumnwidth} @{\hspace{\separatorcolumnwidth}}p{\maincolumnwidth}@{}}
+		\begin{tabu} {@{} p{\hintscolumnwidth} @{} }
+			\raggedleft{#1}\\
+			\raggedleft{#2}
+		\end{tabu}
+		&
+		\begin{tabu} {@{} p{\maincolumnwidth-\stadtBreite-1em}@{\hspace{1em}}p{\stadtBreite} @{}}
+			{\mdseries{#3}}%
+			\if\relax\detokenize{#4}\relax\else{\textit{ -- #4}}\fi
+			&\raggedleft{#5}\\%
+			\begin{minipage}[t]{\linewidth}						
+				\iftoggle{itemizeEintrag}{%				
+    				\begin{itemizeCV}						
+						\raggedright{\item #7}
+					\end{itemizeCV}				
+				}{%				
+				\raggedright{#7}
+				}
+			\end{minipage}
+			&\raggedleft{#6}
+		\end{tabu}%
+	\end{tabu}%
+  \par\addvspace{\eintragsAbstand}
+}
+
+
+% Eintrag mit zwei Spalten
+\newcommand* \eintragLZwei [7]{%
+	\begin{tabu} {@{} p{\hintscolumnwidth} @{\hspace{\separatorcolumnwidth}} p{\maincolumnwidth}@{}}  
+		\begin{tabu} {@{} p{\hintscolumnwidth}  @{}}
+			\raggedleft{#1}\\
+			\raggedleft{#2}
+		\end{tabu}		
+		&
+		\begin{tabu} {@{} p{\maincolumnwidth} @{}}
+			\raggedright{
+			{\mdseries{#3}}%
+			\if\relax\detokenize{#4}\relax\else{\textit{ -- #4}}\fi%			
+			\if\relax\detokenize{#5}\relax\else{\textit{ -- #5 #6}}\fi%
+			}\\%
+			\begin{minipage}[t]{\linewidth}
+				\iftoggle{itemizeEintrag}{%
+    				\begin{itemizeCV}
+						\raggedright{\item #7}
+					\end{itemizeCV}
+				}{%
+				\raggedright{#7}
+				}
+			\end{minipage}
+		\end{tabu}\\
+	\end{tabu}%
+	\par\addvspace{\eintragsAbstand}
+}
+
+
+% Auswahl zwischen zwei oder drei Spalten
+\newtoggle{zweiSpalten}
+
+\newcommand \eintrag{
+	\iftoggle{zweiSpalten}{\eintragLZwei}{\eintragLDrei}
+}
+
+
+%\eintragL{Dauer}{Firma}{JobTitel}{Ort}{Beschreibung ... mehrzeilig trennen mit \neueZeile}
+\newcommand \eintragL [5]{\eintrag{#1}{}{#2}{#3}{#4}{}{#5}}
+%\eintragLStadt{Dauer}{Firma}{JobTitel}{Ort}{zweite Zeile Ort}{Beschreibung}
+\newcommand \eintragLStadt [6]{\eintrag{#1}{}{#2}{#3}{#4}{#5}{#6}}
+%\eintragLZeit{Dauer}{zweite Zeile Dauer}{Firma}{JobTitel}{Ort}{Beschreibung}
+\newcommand \eintragLZeit [6]{\eintrag{#1}{#2}{#3}{#4}{#5}{}{#6}}
+%\eintragLZeitStadt{Dauer}{zweite Zeile Dauer}{Firma}{JobTitel}{Ort}{zweite Zeile Ort}{Beschreibung}
+\newcommand \eintragLZeitStadt [7]{\eintrag{#1}{#2}{#3}{#4}{#5}{#6}{#7}}
+
+
+
+% Eintrag mit einer Zeile
+\newcommand* \eintragLEinzeiler [4]{%
+	\iftoggle{zweiSpalten}{%
+	%Zwei Spalten
+	\begin{tabu} {@{} p{\hintscolumnwidth} @{\hspace{\separatorcolumnwidth}} p{\maincolumnwidth}@{}}
+		\raggedleft{#1} &{\mdseries{#2}}%
+		\if\relax\detokenize{#3}\relax\else{\textit{ -- #3}}\fi
+		\textit{ -- #4}%		
+	\end{tabu}
+	}{%
+	%Drei Spalten
+	\begin{tabu} {@{} p{\hintscolumnwidth} @{\hspace{\separatorcolumnwidth}}%
+	p{\maincolumnwidth-\stadtBreite-1em}@{\hspace{1em}} p{\stadtBreite}@{} }{  
+		\raggedleft{#1} &{\mdseries{#2}}%
+		\if\relax\detokenize{#3}\relax\else{\textit{ -- #3}}\fi
+		&\raggedleft{#4}%
+	}\end{tabu}
+	\par\addvspace{\eintragsAbstandEinzeiler}
+}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sonstiges
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% Name
+\newcommand*{\nameCV}{Lebenslauf}
+\newcommand* \setNameCV [1]{\renewcommand* \nameCV {#1}}
+ 
+% neue Zeile in Lebenslauf 
+\newcommand* {\neueZeile} {%
+	\iftoggle{itemizeEintrag}{\item}{\newline}%
+}
+
+
+%% Einstellungen für Itemize
+\newlist{itemizeCV}{itemize}{3}% neue Listenumgebung für Tabellen
+\newcommand*{\setItemizeCV}[1]{
+	\setlist[itemizeCV]{#1}
+	\setlist[itemizeCV,1]{label=\labelitemi}
+	\setlist[itemizeCV,2]{label=\labelitemii}
+	\setlist[itemizeCV,3]{label=\labelitemiii}
+}
+
+
+% Compress itemize: Zum Abstand verkeleinern
+\makeatletter
+\newcommand*{\compress}{\@minipagetrue}
+\makeatother
+
+
+% Signatur
+\newcommand \signaturCV[1][, am ]{
+	\wohnort #1\today\\
+	\includeUnterschrift\\
+	\nameVN
+}
+
+% Lade Einstellungen
+%\AtEndPreamble{
+	\einstellungenLebenslauf
+%}
+
+
+\endinput

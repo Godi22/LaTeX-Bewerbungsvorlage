@@ -1,0 +1,114 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lebenslauf.tex
+% hier befindet sich der Inhalt zum Lebenslauf
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Die grundlegenden Einstellungen für den Lebenslauf befinden sich in der Datei Einstellungen
+% Am Ende eines mehrzeiligen Eintrages, bzw am Ende eines Itemize sollte das Kommando \strut stehen, damit der Abstand nach dem Eintrag richtig berechnet wird.
+
+% Angabe der Längsten Stadt
+\laengsteStadt{a.d. LangemFluss}
+
+% Der Titel des Lebenslaufes
+\titel[\emph{\nameCV}]
+
+\section{Persönliche Daten}
+\eintragK{Name}				{\nachname}
+\eintragK{Vorname}			{\vorname}
+\eintragK{Akad. Grad}		{\akadTitel}
+\eintragK{Geburtsdatum}		{\geburtstag\ in \geburtsort}
+%\eintragK{Geburtsort}		{\geburtsort}
+\eintragK{Nationalität}		{\nationalitaet}
+\eintragK{Anschrift}		{\strasse\newline\PLZwohnort}
+%\eintragK{}				{\PLZwohnort}
+\eintragK{Telefon}			{\mobilNr}
+\eintragK{Email}			{\myEmail}
+\eintragKK{Sonstiges}		{Sonstiges 1}{Sonstiges 2}
+
+
+\section{Berufliche Tätigkeiten}
+\eintragL{\zeit[01.2008-09.2012]}{Techniker}{}{Stadt}{%	
+	Aufgaben: ...\neueZeile	
+	Bei Firma ...\strut
+}
+
+\eintragL{\seit[10.2012]}{Regelungstechniker}{}{Stadt}{%	
+	Bei Firma ...\strut
+}
+
+
+
+\section{Universitäre Ausbildung}
+\subsection{an der Universität ...}
+% Speichere Wert von zweiSpaltig und ändere diesen auf true
+\edef\statusZweiSpalten{\gettoggle{zweiSpalten}}
+\toggletrue{zweiSpalten}
+\eintragL{\zeit[9.2005-8.2009]}{Bachelorstudium ...}{B.Sc.}{}{%	
+	\enclRef{ZeugnisBsp}{Abschlussnote: Link zum Zeugnis} \neueZeile
+	Bachelorarbeit:\strut
+	\begin{itemizeCV}
+		\item \glqq ...\grqq 
+		\item Themenbereich: ...
+		\item verwendete Technologien: ...\strut
+	\end{itemizeCV}
+}
+
+
+% Lokales deaktivieren des "Itemize" 
+% Aktuellen Status speichern
+\edef\itemizeStatus{\gettoggle{itemizeEintrag}}
+\togglefalse{itemizeEintrag}
+% Eintrag
+\eintragL{\zeit[9.2009-11.2012]}{Masterstudium ...}{M.Sc.}{}{
+Hier steht ein langer Text\neueZeile
+mit mehreren Zeilenumbrüchen, einer Zeile die länger als die Breite der Spalte für zweispaltige Einträge ist und\neueZeile
+ohne Aufzählungspunkte.\strut
+}
+% Alten Status wieder herstellen
+\settoggle{itemizeEintrag}{\itemizeStatus}
+\settoggle{zweiSpalten}{\statusZweiSpalten}
+
+
+\section{Schulbildung}
+\eintragLZeitStadt{\zeit[09.1997-08.2001]}{\zeit[09.2001-08.2005]}{Gymnasium}{Matura}{Stadt}{a.d. LangemFluss}{
+Hier steht ein Text der länger als die Zeilenbreite ist und somit ein Umbruch erzwungen wird.\neueZeile
+Wenn in den Einstellungen die Aufzählungspunkte aktiviert sind, dann befinden sich hier zwei Aufzählungspunkte.\strut
+}
+
+
+
+\section{Weitere Tätigkeiten}
+\eintragLEinzeiler{\seit[01.2000]}{Freiwillige Feuerwehr}{}{Stadt}{}
+\eintragLEinzeiler{\Datum[10.2010]}{Organisator Feuerwehrfest}{}{Stadt}{}
+
+
+
+% Spaltenbreite der linken Spalte im EintragKB
+\laengsterLinkerEintragKB{Webtechnologien}
+
+% eintragKB links ausrichten
+%\toggletrue{eintragKBlinks}
+
+% Wenn eintragKBlinks ausgewählt ist, dann ist es eventuell auch sinnvoll die Section Breite anzupassen
+\iftoggle{eintragKBlinks}{\setBreiteLinkeSpalteLL{\breiteLinkerEintragKB}}{}
+
+\section{IT--Kenntnisse}
+
+\eintragKB{Betriebssysteme}{Windows, Linux}
+\eintragKB{Office}{OpenOffice, \LaTeX, und noch viel mehr damit ein Zeilenumbruch erzeugt wird}
+\eintragKB{Webtechnologien}{HTML, PHP}
+
+
+\section{Sonstiges}
+\eintragKB{Sprachen}{Englisch: C1\newline Deutsch: Muttersprache}
+\eintragKB{Führerschein}{A und B}
+
+
+
+\vspace{3\baselineskip}
+\signaturCV[, am ]
+

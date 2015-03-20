@@ -1,0 +1,83 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Projektpfade.sty
+% stellt die Pfade im Projekt zur Verfügung
+% und die Kommandos zur Angabe der Pfade von extern.
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{Projektpfade}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Projektpfade
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Wurzelverzeichniss Projekt
+\newcommand*{\projectRoot}{../}
+
+% Ein Ordner über dem Wurzelverzeichnis
+\newcommand*{\outsideProjectRoot}{\projectRoot ../}
+
+
+% Pfad zum Inhalt
+\newcommand*{\pfadInhalt}{\outsideProjectRoot Inhalt/}
+\newcommand*{\setPfadInhalt}[1]{\renewcommand*{\pfadInhalt}{#1}}
+% Überprüfe ob von Extern (aus Skript) der Pfad vorgegeben wurde.
+%\newcommand{\pfadInhaltExt}{\projectRoot InhaltTest/} % Für Testzwecke (defaultmäßig auskommentiert)
+\ifdefined\pfadInhaltExt \setPfadInhalt{\pfadInhaltExt}\else\fi
+
+% Pfad zum Deckblatt
+\newcommand*{\pfadInhaltDeckblatt}{\pfadInhalt}
+\newcommand*{\setPfadInhaltDeckblatt}[1]{\renewcommand*{\pfadInhaltDeckblatt}{#1}}
+
+% Pfad zum Anschreiben
+\newcommand*{\pfadInhaltAnschreiben}{\pfadInhalt}
+\newcommand*{\setPfadInhaltAnschreiben}[1]{\renewcommand*{\pfadInhaltAnschreiben}{#1}}
+
+% Pfad zum Lebenslauf
+\newcommand*{\pfadInhaltLebenslauf}{\pfadInhalt}
+\newcommand*{\setPfadInhaltLebenslauf}[1]{\renewcommand*{\pfadInhaltLebenslauf}{#1}}
+
+% Pfad zu den Einstellungen
+\newcommand*{\pfadEinstellungen}{\pfadInhalt}
+\newcommand*{\setPfadEinstellungen}[1]{\renewcommand*{\pfadEinstellungen}{#1}}
+
+% Pfad zu den Dateien
+\newcommand*{\pfadDateien}{\pfadInhalt Dateien/}
+\newcommand*{\setPfadDateien}[1]{\renewcommand*{\pfadDateien}{#1}}
+
+% Pfad zu den AnlagenDateien
+\newcommand*{\pfadAnlagen}{\pfadDateien Anlagen/}
+\newcommand*{\setPfadAnlagen}[1]{\renewcommand*{\pfadAnlagen}{#1}}
+
+% Pfad zur Anlagen.tex Datei
+\newcommand*{\pfadInhaltAnlagen}{\pfadInhalt}
+\newcommand*{\setPfadInhaltAnlagen}[1]{\renewcommand*{\pfadInhaltAnlagen}{#1}}
+
+% Name des Package für die Pfade im Inhalt
+\newcommand*{\pfadePackage}{PfadeInhalt}
+
+% Überprüfe ob Datei PfadeInhalt.sty im Ordner Inhalt existiert
+\IfFileExists{\pfadInhalt \pfadePackage .sty}{
+	\RequirePackage{\pfadInhalt \pfadePackage}
+}{% Wenn nein, dann gehe in Ordner InhaltTest
+	\setPfadInhalt{\projectRoot InhaltTest/}
+	\RequirePackage{\pfadInhalt \pfadePackage}	
+}
+
+
+% Projektspezifische Pfade
+\providecommand*{\pfadMain}{\projectRoot Main/}
+\providecommand*{\pfadVorlagen}{\projectRoot Vorlagen/}
+
+\providecommand*{\pfadSymbole}{\projectRoot Symbole/}
+\providecommand*{\pdfPicPath}{\pfadSymbole PDFs/}
+
+\providecommand*{\pfadBuild}{\pfadMain build/}
+
+
+
+\endinput

@@ -1,0 +1,30 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LebenslaufAbstract.tex
+% abstrahiert den Inhalt des Lebenslaufs
+%
+% Autor: Gottfried Schrittwieser
+% Lizenzhinweis: Siehe License.txt im Wurzelverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Diese Datei abstrahiert den Inhalt des Lebenslaufs
+% Zeilenumbruch
+
+
+\emergencystretch=25pt\tolerance=800\hyphenpenalty=1000
+
+% Sichern des Zeileneinrückens bei neuen Absatz
+\setParskip{off}
+\newlength{\parindentBeforeCV}
+\setlength{\parindentBeforeCV}{\parindent}
+\setlength{\parindent}{0pt}
+
+\changeHeaderAndFooter{\nameCV}
+
+\setFirstPage{\iftoggle{toggleAnlagen}{\enclLabel}{}}{\nameCV}{}{}
+\addcontentsline{toc}{chapter}{\nameCV}
+\input{\pfadInhaltLebenslauf Lebenslauf}
+\setLastPage
+
+% Wiederherstellen des Zeileneinrückens
+\setlength{\parindent}{\parindentBeforeCV}
