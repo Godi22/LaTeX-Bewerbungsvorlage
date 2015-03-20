@@ -1,5 +1,5 @@
 # LaTeX-Bewerbungsvorlage
-Dies ist eine durchgängige LaTeX-Bewerbungsvorlage auf Basis des ModernCV style.
+Dies ist eine durchgängige LaTeX-Bewerbungsvorlage auf Basis des ModernCV style und der Bewerbung von [Stefanqn](https://github.com/Stefanqn/Bewerbung).
 
 Diese Vorlage bietet viele Einstellungsmöglichkeiten zur Anpassung des Designs. Ein Muster kann [hier](https://github.com/Godi22/LaTeX-Bewerbungsvorlage/blob/master/InhaltTest/Beispiel_pdf/Max_Musterfrau_Bewerbung.pdf) angesehen werden.
 
