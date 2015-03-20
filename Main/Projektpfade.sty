@@ -57,15 +57,16 @@
 \newcommand*{\pfadInhaltAnlagen}{\pfadInhalt}
 \newcommand*{\setPfadInhaltAnlagen}[1]{\renewcommand*{\pfadInhaltAnlagen}{#1}}
 
-% Name des Package für die Pfade im Inhalt
-\newcommand*{\pfadePackage}{PfadeInhalt}
+% Name des ConfigFile für die Pfade im Inhalt
+\newcommand*{\pfadeConfig}{PfadeInhalt}
 
-% Überprüfe ob Datei PfadeInhalt.sty im Ordner Inhalt existiert
-\IfFileExists{\pfadInhalt \pfadePackage .sty}{
-	\RequirePackage{\pfadInhalt \pfadePackage}
+% Überprüfe ob Datei PfadeInhalt.tex im Ordner Inhalt existiert
+\IfFileExists{\pfadInhalt \pfadeConfig .cfg}{
+	\InputIfFileExists{\pfadInhalt \pfadeConfig .cfg}{}{}
 }{% Wenn nein, dann gehe in Ordner InhaltTest
 	\setPfadInhalt{\projectRoot InhaltTest/}
-	\RequirePackage{\pfadInhalt \pfadePackage}	
+	\InputIfFileExists{\pfadInhalt \pfadeConfig .cfg}{}{}	
+	%\input{\pfadInhalt \pfadeConfig}
 }
 
 

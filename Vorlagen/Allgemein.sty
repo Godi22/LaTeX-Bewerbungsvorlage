@@ -79,7 +79,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Lade Einstellungen
-\RequirePackage{\pfadEinstellungen Einstellungen}
+\InputIfFileExists{\pfadEinstellungen Einstellungen.cfg}{}{}
 
 
 \RequirePackage[utf8x]{inputenc}
@@ -180,8 +180,6 @@
 \newcommand* \includeUnterschrift {\includegraphics[height=\unterschriftHoehe]{\unterschriftPfad}}
 
 \newcommand* \setFoto[1] {\renewcommand* \foto{#1}}
-
-\input{\pfadInhalt PersonenbezogeneDaten}
 
 
 
