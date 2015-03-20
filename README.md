@@ -11,7 +11,7 @@ Da ich einiges an Zeit in dieses Projekt investiert habe und du dir bei der Verw
 Zum Erstellen einer neuen Bewerbung kann der Inhalt des Ordner InhaltTest herangezogen werden.
 ##### Folgende Punkte sollten durchgeführt werden:
 1. Ordner InhaltTest kopieren und ausserhalb des Projektordners mit dem Name Inhalt einfügen. Es kann auch ein anderer Name vergeben werden, jedoch muss dann der Pfad in der Datei Main/Projektpfade.sty angepasst werden, oder es wird das Batch/Bash Skript mit korrigiertem Pfad verwendet.
-2. Wenn gewünscht Pfade in der Datei PfadeInhalt.sty anpassen. Wird das Skript Bewerbung.bat (Windows) bzw Bewerbung.sh (Ubuntu) zum kompilieren verwendet, dann muss in dieser ebenfalls der Pfad angepasst werden.
+2. Wenn gewünscht Pfade in der Datei PfadeInhalt.cfg anpassen. Wird das Skript Bewerbung.bat (Windows) bzw Bewerbung.sh (Ubuntu) zum kompilieren verwendet, dann muss in dieser ebenfalls der Pfad angepasst werden.
 3. Bewerbung.sh bzw .bat ausführen. Wenn dies ohne Fehler durchläuft dann wird eine .pdf Datei in dem angegebenen Pfad erstellt.
 4. Datei PersonenbezogeneDaten.tex anpassen. => Personalisiert die Bewerbung.
 5. Im Ordner Dateien die Unterschrift, Foto und Anlagen einfügen. Die Dateinamen sollten kein Leerzeichen oder Sonderzeichen beinhalten.
@@ -19,7 +19,7 @@ Zum Erstellen einer neuen Bewerbung kann der Inhalt des Ordner InhaltTest herang
 7. Datei Lebenslauf.tex anpassen. Mit dem Kommando \enclRef{Dateiname}{Sonstiger Text} kann eine Referenz auf die Anlage gesetzt werden.
 	Weitere Befehle sind dem Test-Lebenslauf zu entnehmen.
 8. Dateien im Ordner Anschreiben laut Vorlage anpassen.
-9. Die Einstellungen in der Datei Einstellungen.sty anpassen. Genaueres ist in der Test Datei beschrieben.
+9. Die Einstellungen in der Datei Einstellungen.cfg anpassen. Genaueres ist in der Test Datei beschrieben.
 10. Kompilieren mit beliebigen Programm oder den Skript Bewerbung.sh bzw .bat.
 11. Eventuell noch das Deckblatt anpassen.
 
