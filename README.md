@@ -52,3 +52,4 @@ Dieser Ordner beinhaltet die Symbole für Adresse und Fax. Andere Symbole werden
 	* Ordnerstruktur geändert für bessere Übersicht.
 	* Bug in Fußzeile behoben (Schrift für Seitenanzahl wurde manchmal nicht richtig Positioniert).
 * V1.0 Initial-Version
+
