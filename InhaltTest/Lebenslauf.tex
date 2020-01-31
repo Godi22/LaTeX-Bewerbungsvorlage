@@ -13,8 +13,9 @@
 % Angabe der Längsten Stadt
 \laengsteStadt{a.d. LangemFluss}
 
-% Der Titel des Lebenslaufes
-\titel[\emph{\nameCV}]
+% Der Titel des Lebenslaufes ist in den Einstellungen hinterlegt.
+%\titel[\emph{\nameCV}]
+\titel[\textbf{\textsc{\nameCV}}]
 
 \section{Persönliche Daten}
 \eintragK{Name}				{\nachname}
@@ -36,7 +37,7 @@
 	Bei Firma ...\strut
 }
 
-\eintragL{\seit[10.2012]}{Regelungstechniker}{}{Stadt}{%	
+\eintragL{\seit[10.2012]}{\enclRef{ZeugnisBsp2}{Regelungstechniker}}{}{Stadt}{%	Referenz zum Arbeitszeugnis
 	Bei Firma ...\strut
 }
 
@@ -48,7 +49,7 @@
 \edef\statusZweiSpalten{\gettoggle{zweiSpalten}}
 \toggletrue{zweiSpalten}
 \eintragL{\zeit[9.2005-8.2009]}{Bachelorstudium ...}{B.Sc.}{}{%	
-	\enclRef{ZeugnisBsp}{Abschlussnote: Link zum Zeugnis} \neueZeile
+	\enclRef{ZeugnisBsp1}{Abschlussnote: Link zum Zeugnis} \neueZeile
 	Bachelorarbeit:\strut
 	\begin{itemizeCV}
 		\item \glqq ...\grqq 

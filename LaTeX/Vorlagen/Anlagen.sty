@@ -84,6 +84,24 @@
 \newcommand{\anlagenText}{} 
 
 \makeatletter
+\newcommand{\anlagenTextItemizeBegin}[1]{%	
+	\g@addto@macro\anlagenText{%	
+	#1%
+		\begin{itemizeEncl}%
+	}%	
+}%
+\makeatother
+
+\makeatletter
+\newcommand{\anlagenTextItemizeEnd}{%
+	\g@addto@macro\anlagenText{%
+		\end{itemizeEncl}%
+	}%	
+}%
+\makeatother
+
+
+\makeatletter
 \newcommand{\addAnlagenText}[2]{
 	\g@addto@macro\anlagenText{
 		\iftoggle{itemizeAnlagen}{\item\ \enclRef{#2}{#1}}{\enclRef{#2}{#1} \newline}}	
@@ -96,14 +114,26 @@
 }
 
 \newcommand{\enclAnschreiben}{ % Dieser Befehl wird im Anschreiben aufgerufen
-	\encl{:
+	\encl{
 		\raggedright\\
-		\iftoggle{itemizeAnlagen} {						
-			\begin{itemizeEncl}			
-		}{}
-	\anlagenText
-	\iftoggle{itemizeAnlagen} {\end{itemizeEncl}}{}
+		%\iftoggle{itemizeAnlagen} {						
+		%	\begin{itemizeEncl}			
+		%}{}%	
+	\iftoggle{itemizeAnlagen}{\anlagenText}%
+	%\iftoggle{itemizeAnlagen} {\end{itemizeEncl}}{}
 }}
+
+\newcommand{\enclLebenslauf}{ % Dieser Befehl wird im Lebenslauf aufgerufen		
+	\iftoggle{toggleAnschreiben}{}{%
+	\iftoggle{toggleAnlagen}{%
+		\newpage%
+		Test!!!
+		%\changeHeaderAndFooter{\nameLetter}
+		%\raggedright\\			
+		\iftoggle{itemizeAnlagen}{\anlagenText}%
+	}{}
+	}
+}
 
 
 % Fußzeile Anlagen + bookmark
@@ -214,9 +244,14 @@
 % Einbinden der Anlagen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\iftoggle{toggleAnschreiben}{
 \iftoggle{toggleLebenslauf}{
+	\anlagenTextItemizeBegin{}
 	\addAnlagenText{\nameCV}{\nameCV}
+	\anlagenTextItemizeEnd{}
 }{}
+}{}
+
 
 \InputIfFileExists{\pfadInhaltAnlagen Anlagen.tex}{}{}
 

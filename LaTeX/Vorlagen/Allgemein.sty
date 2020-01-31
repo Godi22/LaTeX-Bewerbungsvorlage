@@ -12,6 +12,7 @@
 
 
 \RequirePackage{etoolbox}
+\RequirePackage{fontawesome}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Toggles
@@ -134,6 +135,8 @@
 \newcommand* \myEmail{\href{mailto:\myEmailStr}{\myEmailStr}}
 \newcommand* \myHomepageStr{}
 \newcommand* \myHomepage{\href{\myHomepageStr}{\myHomepageStr}}
+\newcommand* \myLinkedInAddrStr{}
+\newcommand* \myLinkedInAddr{\href{https://\myLinkedInAddrStr}{\myLinkedInAddrStr}}
 \newcommand* \akadTitel {} 
 \newcommand* \preAkadTitel {} 
 \newcommand* \postAkadTitel {} 
@@ -150,8 +153,14 @@
 \newcommand* \foto{}
 
 % Zusammengesetzte Kommandos
+\newcommand* \postAkadTitelKomma {%
+  \ifdefempty{\postAkadTitel}{%   
+  }{%
+      , \postAkadTitel%      
+  }
+}
 \newcommand* \nameVN {\preAkadTitel \vorname\ \nachname \postAkadTitel}
-\newcommand* \nameVNhuge {\normalsize \preAkadTitel {\huge{ \vorname\ \nachname }}\normalsize \postAkadTitel}
+\newcommand* \nameVNhuge {\normalsize \preAkadTitel\ {\huge{\vorname\ \nachname }}\normalsize \postAkadTitel}
 \newcommand* \PLZwohnort {\PLZ \ \wohnort}
 \newcommand* \addresse {\strasse\\\PLZwohnort}
 
@@ -167,6 +176,7 @@
 \newcommand* \setFaxNr [1]{\renewcommand* \faxNr {#1}}
 \newcommand* \setEmail [1]{\renewcommand* \myEmailStr{#1}}
 \newcommand* \setHomepage [1]{\renewcommand* \myHomepageStr{www.#1}}
+\newcommand* \setLinkedIn [1]{\renewcommand* \myLinkedInAddrStr{#1}}
 \newcommand* \setAkadTitel [1]{\renewcommand* \akadTitel {#1}}
 \newcommand* \setPreAkadTitel [1]{\renewcommand* \preAkadTitel {#1 }}
 \newcommand* \setPostAkadTitel [1]{\renewcommand* \postAkadTitel { #1}}
@@ -313,13 +323,13 @@
      
 % Pagemark umdefinieren
 \renewcommand*{\pagemark}{\usekomafont{pagenumber}{%
-    Seite \thepage /\lastPageNr}}
+    Seite \thepage /\lastPageNr\linebreak}}
 
 
 % Weitere Kopf und Fußzeilen
 % Verwendung von scrlayer-scrpage ab der zweiten Seite:
 \newcommand*{\newFoot}[1]{
-	\ifoot*{#1 \nameVN\\\today}
+	\ifoot*{#1 \nameVN\linebreak\today}
 }
 
 
@@ -350,7 +360,8 @@
 	\ohead*{\kopfName}
 	%\setkomafont{pagehead}{\huge}
 	\KOMAoptions{footsepline=\footLineThick,footwidth=\footWidth}
-	\ofoot*{\pagemark\\}
+	\ofoot*{Seite \thepage /\lastPageNr \linebreak}
+	\cfoot*{}
 	\newFoot{#1}	
 }
 
@@ -389,6 +400,7 @@
 \@ifundefined{meinFaxSymbol}{\newcommand*{\meinFaxSymbol}{}}{}
 \@ifundefined{emailsymbol}{\newcommand*{\emailsymbol}{}}{}
 \@ifundefined{homepagesymbol}{\newcommand*{\homepagesymbol}{}}{}
+\@ifundefined{linkedinsymbol}{\newcommand*{\linkedinsymbol}{}}{}
 \@ifundefined{addresssymbol}{\newcommand*{\addresssymbol}{}}{}
 
 \renewcommand*{\myMarvosymbol}[1]{{\fontfamily{mvs}\fontencoding{U}\fontseries{m}\fontshape{n}\selectfont\char#1}}
@@ -398,9 +410,12 @@
 \renewcommand*{\meinFaxSymbol}{\myMarvosymbol{118}~}
 \renewcommand*{\emailsymbol}{\myMarvosymbol{66}~}
 %\renewcommand*{\homepagesymbol}{{\Large\myMarvosymbol{205}}~}
+\renewcommand*{\linkedinsymbol}{{\faLinkedinSquare}~}
+
 
 \renewcommand*{\meinFaxSymbol}{\includegraphics[height=0.7\baselineskip,margin*=0pt]{\pdfPicPath fax}~}
 \renewcommand*{\addresssymbol}{\includegraphics[height=0.7\baselineskip,margin*=0pt]{\pdfPicPath simple_home}~}
+%\renewcommand*{\linkedinsymbol}{\includegraphics[height=0.7\baselineskip,margin*=0pt]{\pdfPicPath LI-In-Bug}~}
 
 
 

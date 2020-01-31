@@ -11,23 +11,34 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{Projektpfade}
 
+\RequirePackage{newfile}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Projektpfade
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Wurzelverzeichniss Projekt
+% Wurzelverzeichnis Projekt
 \newcommand*{\projectRoot}{../}
 
 % Ein Ordner über dem Wurzelverzeichnis
 \newcommand*{\outsideProjectRoot}{\projectRoot ../}
 
 
-% Pfad zum Inhalt
-\newcommand*{\pfadInhalt}{\outsideProjectRoot Inhalt/}
-\newcommand*{\setPfadInhalt}[1]{\renewcommand*{\pfadInhalt}{#1}}
-% Überprüfe ob von Extern (aus Skript) der Pfad vorgegeben wurde.
-%\newcommand{\pfadInhaltExt}{\projectRoot InhaltTest/} % Für Testzwecke (defaultmäßig auskommentiert)
-\ifdefined\pfadInhaltExt \setPfadInhalt{\pfadInhaltExt}\else\fi
+% Pfad zum Inhalt (Schreibt ebenfalls den Pfad in eine Datei)
+\newcommand*{\pfadInhalt}{}
+\newoutputstream{pfadInhalt}
+\newcommand*{\setPfadInhalt}[1]{
+	\renewcommand*{\pfadInhalt}{#1}
+	\openoutputfile{\jobname.pfadInhalt}{pfadInhalt}
+	\addtostream{pfadInhalt}{#1}  	
+	\closeoutputstream{pfadInhalt}	
+}
+% Überprüfe ob von Extern (aus Skript) der Pfad für den Inhalt vorgegeben wurde.
+\ifdefined\pfadInhaltExt 
+	\setPfadInhalt{\pfadInhaltExt}
+\else
+	\setPfadInhalt{\outsideProjectRoot Inhalt/}
+\fi
 
 % Pfad zum Deckblatt
 \newcommand*{\pfadInhaltDeckblatt}{\pfadInhalt}
@@ -66,13 +77,12 @@
 }{% Wenn nein, dann gehe in Ordner InhaltTest
 	\setPfadInhalt{\projectRoot InhaltTest/}
 	\InputIfFileExists{\pfadInhalt \pfadeConfig .cfg}{}{}	
-	%\input{\pfadInhalt \pfadeConfig}
 }
 
 
 % Projektspezifische Pfade
-\providecommand*{\pfadMain}{\projectRoot Main/}
-\providecommand*{\pfadVorlagen}{\projectRoot Vorlagen/}
+\providecommand*{\pfadMain}{\projectRoot LaTeX/}
+\providecommand*{\pfadVorlagen}{\pfadMain Vorlagen/}
 
 \providecommand*{\pfadSymbole}{\projectRoot Symbole/}
 \providecommand*{\pdfPicPath}{\pfadSymbole PDFs/}

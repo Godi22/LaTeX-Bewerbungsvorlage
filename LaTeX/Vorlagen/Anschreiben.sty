@@ -82,7 +82,7 @@
 
 % Überschrift der Anlagen im Anschreiben
 \newcommand*{\setAnlagenUeberschrift}[1]{\setkomavar{enclseparator}[#1]{}}
-\setAnlagenUeberschrift{Anlagen} % Doppelpunkt muss nicht angeführt werden.
+\setAnlagenUeberschrift{Anlagenverzeichnis} % Doppelpunkt muss nicht angeführt werden.
 
 
 
@@ -108,6 +108,7 @@
 		\if\relax\festnetzNr\relax\else \phonesymbol \festnetzNr\\\fi%
 		\if\relax\faxNr\relax\else      \meinFaxSymbol\faxNr\\\fi%		
 		\if\relax\myEmailStr\relax\else \emailsymbol \myEmail\\\fi%
+		\if\relax\myLinkedInAddrStr\relax\else \linkedinsymbol \myLinkedInAddr\\\fi%
 		\if\relax\myHomepageStr\relax\else \homepagesymbol \myHomepage\\\fi% 
 		}}%	
 }
@@ -141,6 +142,11 @@
 \iftoggle{backaddress}{}{\@setplength{backaddrheight}{0pt}}
 %Absenderzeile im Briefsichtfenster richten fuer DINmtext
 \newcommand{\setToAddrVPos}[1]{\@setplength{toaddrvpos}{#1}}
+\makeatother
+
+% Breite der Empfängeradresse
+\makeatletter
+\newcommand{\setAddrWidth}[1]{\@setplength{toaddrwidth}{#1}}
 \makeatother
 
 

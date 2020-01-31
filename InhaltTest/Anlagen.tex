@@ -12,7 +12,41 @@
 
 % Lebenslauf wird automatisch hinzugefügt, wenn dieser in den Einstellungen aktiviert ist.
 
+
+%%%%%%%%%%% Dienstzeugnisse
+
+\anlagenTextItemizeBegin{\textbf{Dienstzeugnisse}}
+
+\addPdf{ZeugnisBsp2}{Dienstzeugnis Firma XYZ}
+
+\anlagenTextItemizeEnd{}
+
+
+
+%%%%%%%%%%% Ausbildung
+
+\anlagenTextItemizeBegin{\textbf{Studium und Ausbildung}}
+
+\addPdf{ZeugnisBsp1}{Bachelor Zeugnis}
+
+\anlagenTextItemizeEnd{}
+
+
+
+%%%%%%%%%%% Weiterbildung
+
+\anlagenTextItemizeBegin{\textbf{Weiterbildungszertifikate}}
+
+\addPdf[2-3]{ZertifikatMehrSeitig}{Zertifikat} % Hier werden nur die Seiten 2 bis 3 eingebunden
+
+\anlagenTextItemizeEnd{}
+
+
+
+% Sonstiges
+\anlagenTextItemizeBegin{\textbf{Sonstiges}}
+
 \addBild{Foto}{Foto} % Bild passt sich Automatisch an die max Breite bzw max Höhe an, ohne dass es gestaucht wird.
 \addBild[0.1]{Unterschrift}{Unterschrift} % Bild wird Skaliert
-\addPdf[2-3]{ZertifikatMehrSeitig}{Zertifikat} % Hier werden nur die Seiten 2 bis 3 eingebunden
-\addPdf{ZeugnisBsp}{Zeugnis}
+
+\anlagenTextItemizeEnd{}
