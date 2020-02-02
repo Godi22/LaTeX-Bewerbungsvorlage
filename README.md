@@ -45,6 +45,11 @@ Dieser Ordner beinhaltet die Symbole für Adresse und Fax. Andere Symbole werden
 
 
 ## Version
+* V1.2 Muster Deckblatt implementiert und soziale Netzwerke hinzugefügt
+	* Muster Deckblatt in tikz erstellt.
+	* Anlagenverzeichnis von Anschreiben gelöst, so dass dieses auch im Deckblatt benutzt werden kann. (Siehe auch Einstellungen.cfg Anlagen)
+	* Einstellung toggleAnlagenverzeichnisAnschreiben hinzugefügt zum aktivieren / deaktivieren des Anlagenverzeichnis im Anschreiben.
+	* Soziale Netzwerke (Xing, GitHub, Facebook, Pinterest) hinzugefügt. Diese können in den Einstellungen aktiviert/deaktiviert werden.
 * V1.1 Anlagenverzeichnis und externe Pfadvorgabe.
 	* Zu Anlagenverzeichnis Titel/Überschriften hinzugefügt, so dass diese Gruppiert werden können.
 	* Linkedin Link hinzugefügt.

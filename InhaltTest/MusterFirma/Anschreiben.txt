@@ -1,4 +1,4 @@
-﻿\setkomavar{subject}[Betreff ]{Bewerbung als \LaTeX\ Neuling}%
+﻿\setkomavar{subject}[Betreff ]{Bewerbung als \LaTeX\ Junior}%
 \opening{Sehr geehrte Damen und Herren,}
 
 hier kann das Anschreiben eingefügt werden.

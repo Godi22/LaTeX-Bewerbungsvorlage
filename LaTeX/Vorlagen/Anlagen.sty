@@ -113,7 +113,17 @@
 	\hyperref[\enclLabel #1.1]{#2}		
 }
 
-\newcommand{\enclAnschreiben}{ % Dieser Befehl wird im Anschreiben aufgerufen
+
+% Überschrift der Anlagen
+\newcommand{\anlagenUeberschrift}{}
+\newcommand*{\setAnlagenUeberschrift}[1]{%
+	\iftoggle{toggleAnschreiben}{\setkomavar{enclseparator}[#1]{}}{}%
+	\renewcommand{\anlagenUeberschrift}{#1}
+}
+\setAnlagenUeberschrift{Anlagenverzeichnis} % Doppelpunkt muss nicht angeführt werden.
+
+
+\newcommand{\enclAnschreiben}{ % Dieser Befehl wird im Anschreiben oder im Deckblatt aufgerufen
 	\encl{
 		\raggedright\\
 		%\iftoggle{itemizeAnlagen} {						
@@ -122,18 +132,6 @@
 	\iftoggle{itemizeAnlagen}{\anlagenText}%
 	%\iftoggle{itemizeAnlagen} {\end{itemizeEncl}}{}
 }}
-
-\newcommand{\enclLebenslauf}{ % Dieser Befehl wird im Lebenslauf aufgerufen		
-	\iftoggle{toggleAnschreiben}{}{%
-	\iftoggle{toggleAnlagen}{%
-		\newpage%
-		Test!!!
-		%\changeHeaderAndFooter{\nameLetter}
-		%\raggedright\\			
-		\iftoggle{itemizeAnlagen}{\anlagenText}%
-	}{}
-	}
-}
 
 
 % Fußzeile Anlagen + bookmark
@@ -244,12 +242,10 @@
 % Einbinden der Anlagen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{toggleAnschreiben}{
 \iftoggle{toggleLebenslauf}{
 	\anlagenTextItemizeBegin{}
 	\addAnlagenText{\nameCV}{\nameCV}
 	\anlagenTextItemizeEnd{}
-}{}
 }{}
 
 

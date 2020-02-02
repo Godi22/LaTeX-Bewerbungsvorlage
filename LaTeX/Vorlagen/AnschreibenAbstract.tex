@@ -18,11 +18,13 @@
 \signatur
 
 \iftoggle{toggleAnlagen}{
+\iftoggle{toggleAnlagenverzeichnisAnschreiben}{
 
 \newpage
 \changeHeaderAndFooter{\nameLetter}
 
 \enclAnschreiben
+}{}
 }{}
 \setLastPage
 \end{letter}

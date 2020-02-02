@@ -13,9 +13,10 @@
     
     % horizontal bar small
     \fill[color1] ([yshift=-2.5cm]current page.north west) rectangle ([yshift=-2.6cm]current page.north east);
-    % horizontal bar name
-    \node[color2] at ([yshift=-2.5cm]current page.north west){\textbf{\kopfName}};
-    \node[color2, below left, text width=15cm, inner sep=0.3cm] at ([xshift=-0.5cm, yshift=-2.6cm]current page.north east){\raggedleft\large\contactFull};
+    % horizontal bar small name
+    \node[color2, above left, scale=1.5] at ([xshift=-.5cm, yshift=-2.5cm]current page.north east){\textbf{\nameVNhuge}};
+    % contact
+    \node[color2, below left, text width=15cm, inner sep=0.3cm] at ([xshift=-0.5cm, yshift=-2.6cm]current page.north east){\raggedleft\Large\contactFull};
 	
 	% cover photo
     \node[inner sep=0pt,below right] (image) at ([xshift=5cm,yshift=-2.6cm]current page.north west) {\includegraphics[height=8cm]{\foto}};
@@ -24,9 +25,9 @@
     \fill[color2] ([yshift=-10.6cm]current page.north west) rectangle ([yshift=-14.6cm]current page.north east);
     % title and date
     \node[white,below right, scale=3.5, font=\bfseries] at ([yshift=-11.1cm]current page.north west){\deckblattTitel};
-    \node[white,left, font=\huge\bfseries] at ([xshift=-0.5cm,yshift=-14.1cm]current page.north east) {zum \today};
+    \node[white,left, font=\huge\bfseries] at ([xshift=-0.5cm,yshift=-14.1cm]current page.north east) {\today};
             
     % attachments
-    \node[color2,text width=15cm,inner sep=0.3cm,above right] at ([xshift = 5.5cm, yshift=1cm]current page.south west) {\obeylines\enclAnschreiben};
+    \node[color2,text width=15cm,inner sep=0.3cm,above right] at ([xshift = 5.5cm, yshift=1cm]current page.south west) {\obeylines\anlagenUeberschrift\\\anlagenText};
 \end{tikzpicture}
 

@@ -26,6 +26,7 @@
 \newtoggle{toggleAnschreiben} % Toggle für das Anschreiben. Wird in der Anschreiben.sty auf true gesetzt
 \newtoggle{toggleLebenslauf} % Toggle für den Lebenslauf. Wird in der Lebenslauf.sty auf true gesetzt
 \newtoggle{toggleAnlagen} % Toggle für die Anlagen.
+\newtoggle{toggleAnlagenverzeichnisAnschreiben} % Toggle für das Anlagenverzeichnis im Anschreiben.
 
 \newtoggle{backaddress} % Toggle für die Rücksendeadresse im Briefkopf
 
@@ -137,6 +138,16 @@
 \newcommand* \myHomepage{\href{\myHomepageStr}{\myHomepageStr}}
 \newcommand* \myLinkedInAddrStr{}
 \newcommand* \myLinkedInAddr{\href{https://\myLinkedInAddrStr}{\myLinkedInAddrStr}}
+\newcommand* \myXingAddrStr{}
+\newcommand* \myXingAddr{\href{https://\myXingAddrStr}{\myXingAddrStr}}
+\newcommand* \myGitHubAddrStr{}
+\newcommand* \myGitHubAddr{\href{https://\myGitHubAddrStr}{\myGitHubAddrStr}}
+\newcommand* \myPinterestAddrStr{}
+\newcommand* \myPinterestAddr{\href{https://\myPinterestAddrStr}{\myPinterestAddrStr}}
+\newcommand* \myFacebookAddrStr{}
+\newcommand* \myFacebookAddr{\href{https://\myFacebookAddrStr}{\myFacebookAddrStr}}
+\newcommand* \myTwitterAddrStr{}
+\newcommand* \myTwitterAddr{\href{https://\myTwitterAddrStr}{\myTwitterAddrStr}}
 \newcommand* \akadTitel {} 
 \newcommand* \preAkadTitel {} 
 \newcommand* \postAkadTitel {} 
@@ -177,6 +188,11 @@
 \newcommand* \setEmail [1]{\renewcommand* \myEmailStr{#1}}
 \newcommand* \setHomepage [1]{\renewcommand* \myHomepageStr{www.#1}}
 \newcommand* \setLinkedIn [1]{\renewcommand* \myLinkedInAddrStr{#1}}
+\newcommand* \setXing [1]{\renewcommand* \myXingAddrStr{#1}}
+\newcommand* \setGitHub [1]{\renewcommand* \myGitHubAddrStr{#1}}
+\newcommand* \setPinterest [1]{\renewcommand* \myPinterestAddrStr{#1}}
+\newcommand* \setFacebook [1]{\renewcommand* \myFacebookAddrStr{#1}}
+\newcommand* \setTwitter [1]{\renewcommand* \myTwitterAddrStr{#1}}
 \newcommand* \setAkadTitel [1]{\renewcommand* \akadTitel {#1}}
 \newcommand* \setPreAkadTitel [1]{\renewcommand* \preAkadTitel {#1 }}
 \newcommand* \setPostAkadTitel [1]{\renewcommand* \postAkadTitel { #1}}
@@ -190,6 +206,23 @@
 \newcommand* \includeUnterschrift {\includegraphics[height=\unterschriftHoehe]{\unterschriftPfad}}
 
 \newcommand* \setFoto[1] {\renewcommand* \foto{#1}}
+
+
+
+\newcommand{\contactFull}{
+		\addresssymbol \addresse\\%
+		\if\relax\mobilNr			\relax\else \mobilesymbol	\mobilNr\\\fi%
+		\if\relax\festnetzNr		\relax\else \phonesymbol	\festnetzNr\\\fi%
+		\if\relax\faxNr				\relax\else \meinFaxSymbol	\faxNr\\\fi%		
+		\if\relax\myEmailStr		\relax\else \emailsymbol	\myEmail\\\fi%
+		\if\relax\myLinkedInAddrStr	\relax\else \linkedinsymbol \myLinkedInAddr\\\fi%
+		\if\relax\myXingAddrStr		\relax\else \xingsymbol 	\myXingAddr\\\fi%
+		\if\relax\myGitHubAddrStr	\relax\else \githubsymbol   \myGitHubAddr\\\fi%
+		\if\relax\myHomepageStr		\relax\else \homepagesymbol	\myHomepage\\\fi%
+		\if\relax\myFacebookAddrStr	\relax\else \facebooksymbol \myFacebookAddr\\\fi%
+		\if\relax\myTwitterAddrStr	\relax\else \twittersymbol 	\myTwitterAddr\\\fi%
+		\if\relax\myPinterestAddrStr\relax\else \pinterestsymbol\myPinterestAddr\\\fi%
+}
 
 
 
@@ -401,7 +434,13 @@
 \@ifundefined{emailsymbol}{\newcommand*{\emailsymbol}{}}{}
 \@ifundefined{homepagesymbol}{\newcommand*{\homepagesymbol}{}}{}
 \@ifundefined{linkedinsymbol}{\newcommand*{\linkedinsymbol}{}}{}
+\@ifundefined{xingsymbol}{\newcommand*{\xingsymbol}{}}{}
+\@ifundefined{githubsymbol}{\newcommand*{\githubsymbol}{}}{}
+\@ifundefined{facebooksymbol}{\newcommand*{\facebooksymbol}{}}{}
+\@ifundefined{twittersymbol}{\newcommand*{\twittersymbol}{}}{}
 \@ifundefined{addresssymbol}{\newcommand*{\addresssymbol}{}}{}
+\@ifundefined{pinterestsymbol}{\newcommand*{\pinterestsymbol}{}}{}
+
 
 \renewcommand*{\myMarvosymbol}[1]{{\fontfamily{mvs}\fontencoding{U}\fontseries{m}\fontshape{n}\selectfont\char#1}}
 
@@ -411,6 +450,12 @@
 \renewcommand*{\emailsymbol}{\myMarvosymbol{66}~}
 %\renewcommand*{\homepagesymbol}{{\Large\myMarvosymbol{205}}~}
 \renewcommand*{\linkedinsymbol}{{\faLinkedinSquare}~}
+\renewcommand*{\xingsymbol}{{\faXingSquare}~}
+\renewcommand*{\githubsymbol}{{\faGithubSquare}~}
+\renewcommand*{\pinterestsymbol}{{\faPinterestSquare}~}
+\renewcommand*{\facebooksymbol}{{\faFacebookSquare}~}
+\renewcommand*{\twittersymbol}{{\faTwitterSquare}~}
+
 
 
 \renewcommand*{\meinFaxSymbol}{\includegraphics[height=0.7\baselineskip,margin*=0pt]{\pdfPicPath fax}~}

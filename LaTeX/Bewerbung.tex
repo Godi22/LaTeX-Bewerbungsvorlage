@@ -24,6 +24,10 @@
 \usepackage{\pfadVorlagen Lebenslauf}
 }{}
 
+\iftoggle{toggleDeckblatt}{
+\input{\pfadInhaltDeckblatt Deckblatt_Praeamble}
+}{}
+
 
 \begin{document}
 \iftoggle{toggleDeckblatt}{
